@@ -99,6 +99,14 @@ namespace tridimensional {
                 p /= value; return p;
             }
 
+            dimension::Millimeter
+            dot(const Point& lhs) const {
+                return  (x_ / 1000) * (lhs.x_ / 1000)
+                    +   (y_ / 1000) * (lhs.y_ / 1000)
+                    +   (z_ / 1000) * (lhs.z_ / 1000)
+                    ;
+            }
+
             friend std::ostream&
             operator<<(std::ostream& os, const Point& p) {
                 return os   << "(" << (p.x_ / 1000)

@@ -70,6 +70,56 @@ RC_GTEST_PROP(DIVISION, NEUTRAL, (const Point& xs)) {
     EXPECT_EQ(xs / 1, xs);
 }
 
+TEST(DOT, D1) {
+    Point x(1, 0, 0);
+    Point y(0, 1, 0);
+    Point z(0, 0, 1);
+
+    EXPECT_EQ(x.dot(x), 1);
+    EXPECT_EQ(x.dot(y), 0);
+    EXPECT_EQ(x.dot(z), 0);
+
+    EXPECT_EQ(y.dot(x), 0);
+    EXPECT_EQ(y.dot(y), 1);
+    EXPECT_EQ(y.dot(z), 0);
+
+    EXPECT_EQ(z.dot(x), 0);
+    EXPECT_EQ(z.dot(y), 0);
+    EXPECT_EQ(z.dot(z), 1);
+}
+
+TEST(DOT, D2) {
+    Point xy(1, 1, 0);
+    Point yz(0, 1, 1);
+    Point xz(1, 0, 1);
+
+    EXPECT_EQ(xy.dot(xy), 2);
+    EXPECT_EQ(xy.dot(yz), 1);
+    EXPECT_EQ(xy.dot(xz), 1);
+
+    EXPECT_EQ(yz.dot(xy), 1);
+    EXPECT_EQ(yz.dot(yz), 2);
+    EXPECT_EQ(yz.dot(xz), 1);
+
+    EXPECT_EQ(xz.dot(xy), 1);
+    EXPECT_EQ(xz.dot(yz), 1);
+    EXPECT_EQ(xz.dot(xz), 2);
+}
+
+TEST(DOT, D3) {
+    Point xyz(1, 1, 1);
+    EXPECT_EQ(xyz.dot(xyz), 3);
+}
+
+RC_GTEST_PROP(DOT, COMMUTATIVE, (const Point& xs, const Point& ys)) {
+    EXPECT_EQ(xs.dot(ys), ys.dot(xs));
+}
+
+RC_GTEST_PROP(DOT, SCALAR, (const Point& xs, const Point& ys, std::uint8_t value)) {
+    EXPECT_EQ((value * xs).dot(ys), value * (xs.dot(ys)));
+    EXPECT_EQ((value * xs).dot(ys),   xs.dot(value * ys));
+}
+
 int
 main(int argc, char** argv) {
     testing::InitGoogleTest(&argc, argv);
