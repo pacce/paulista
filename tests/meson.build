@@ -9,3 +9,5 @@ rapidcheck_gtest    = rapidcheck_project.dependency('rapidcheck_gtest')
 gtest               = dependency('gtest')
 
 dependencies  = [gtest, rapidcheck, rapidcheck_gtest, paulista_dep]
+
+test('point', executable('point', 'point.cpp', dependencies: dependencies))

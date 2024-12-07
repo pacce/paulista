@@ -32,3 +32,5 @@
 *.app
 
 subprojects/**/
+.cache
+compile_commands.json
