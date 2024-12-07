@@ -2,7 +2,9 @@
 #define PAULISTA_HPP__
 
 #include <cstdint>
+#include <optional>
 #include <ostream>
+#include <vector>
 
 namespace paulista {
 namespace dimension {
@@ -120,6 +122,23 @@ namespace tridimensional {
             dimension::Micrometer y_;
             dimension::Micrometer z_;
     };
+
+namespace point {
+    inline std::optional<Point>
+    centroid(const std::vector<Point>& ps) {
+        if (ps.empty()) {
+            return std::nullopt;
+        } else if (ps.size() == 1) {
+            return ps.front();
+        } else {
+            std::int32_t denominator = ps.size();
+
+            Point p = ps.front();
+            for (std::int32_t i = 1; i < denominator; i++) { p += ps[i]; }
+            return (p / denominator);
+        }
+    };
+} // namespace
 } // namespace tridimensional {
 } // namespace paulista
 

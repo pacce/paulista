@@ -120,6 +120,36 @@ RC_GTEST_PROP(DOT, SCALAR, (const Point& xs, const Point& ys, std::uint8_t value
     EXPECT_EQ((value * xs).dot(ys),   xs.dot(value * ys));
 }
 
+TEST(CENTROID, EMPTY) {
+    EXPECT_FALSE(paulista::tridimensional::point::centroid({}));
+}
+
+RC_GTEST_PROP(CENTROID, SINGLE, (const Point& xs)) {
+    std::optional<Point> c = paulista::tridimensional::point::centroid({xs});
+    ASSERT_TRUE(c);
+    EXPECT_EQ(c, xs);
+}
+
+RC_GTEST_PROP(CENTROID, CONSTANT, (const Point& xs, std::uint8_t size)) {
+    RC_PRE(size > 0);
+
+    std::optional<Point> c = paulista::tridimensional::point::centroid({size, xs});
+    ASSERT_TRUE(c);
+    EXPECT_EQ(c, xs);
+}
+
+RC_GTEST_PROP(CENTROID, PROGRESSION, (std::uint8_t size)) {
+    RC_PRE(size > 0);
+
+    std::vector<Point> ps;
+    for (paulista::dimension::Millimeter i = 0; i < size; i++) {
+        ps.emplace_back(i, i, i);
+    }
+    Point mean = (ps.front() + ps.back()) / 2;
+
+    EXPECT_EQ(mean, paulista::tridimensional::point::centroid(ps));
+}
+
 int
 main(int argc, char** argv) {
     testing::InitGoogleTest(&argc, argv);
