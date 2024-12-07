@@ -48,6 +48,22 @@ namespace tridimensional {
                 return *this;
             }
 
+            Point&
+            operator*=(int32_t value) {
+                x_ *= value;
+                y_ *= value;
+                z_ *= value;
+                return *this;
+            }
+
+            Point&
+            operator/=(int32_t value) {
+                x_ /= value;
+                y_ /= value;
+                z_ /= value;
+                return *this;
+            }
+
             friend Point
             operator+(Point lhs, const Point& rhs) {
                 lhs += rhs; return lhs;
@@ -66,6 +82,21 @@ namespace tridimensional {
             friend Point
             operator-(Point lhs, const Point& rhs) {
                 lhs -= rhs; return lhs;
+            }
+
+            friend Point
+            operator*(std::int32_t value, Point p) {
+                p *= value; return p;
+            }
+
+            friend Point
+            operator*(Point p, std::int32_t value) {
+                p *= value; return p;
+            }
+
+            friend Point
+            operator/(Point p, std::int32_t value) {
+                p /= value; return p;
             }
 
             friend std::ostream&
