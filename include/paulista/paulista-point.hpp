@@ -123,6 +123,7 @@ namespace tridimensional {
             dimension::Micrometer z_;
     };
 
+    using Vector = Point;
 namespace point {
     inline std::optional<Point>
     centroid(const std::vector<Point>& ps) {
