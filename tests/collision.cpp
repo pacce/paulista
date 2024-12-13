@@ -41,6 +41,60 @@ TEST(COLLISION, EMPTY) {
     ASSERT_FALSE(paulista::collision::detect(xs, ys));
 }
 
+TEST(COLLISION, POSITIVE) {
+    paulista::collision::Shape xs = {
+          {0, 0, 0}
+        , {2, 0, 0}
+        , {2, 2, 0}
+        , {0, 2, 0}
+        , {0, 0, 2}
+        , {2, 0, 2}
+        , {2, 2, 2}
+        , {0, 2, 2}
+    };
+    paulista::collision::Shape ys = {
+          {1, 1, 1}
+        , {3, 1, 1}
+        , {3, 3, 1}
+        , {1, 3, 1}
+        , {1, 1, 3}
+        , {3, 1, 3}
+        , {3, 3, 3}
+        , {1, 3, 3}
+    };
+
+    std::optional<bool> collision = paulista::collision::detect(xs, ys);
+    ASSERT_TRUE(collision);
+    EXPECT_TRUE(*collision);
+}
+
+TEST(COLLISION, NEGATIVE) {
+    paulista::collision::Shape xs = {
+          {0, 0, 0}
+        , {2, 0, 0}
+        , {2, 2, 0}
+        , {0, 2, 0}
+        , {0, 0, 2}
+        , {2, 0, 2}
+        , {2, 2, 2}
+        , {0, 2, 2}
+    };
+    paulista::collision::Shape ys = {
+          {3, 3, 3}
+        , {5, 3, 3}
+        , {5, 5, 3}
+        , {3, 5, 3}
+        , {3, 3, 5}
+        , {5, 3, 5}
+        , {5, 5, 5}
+        , {3, 5, 5}
+    };
+
+    std::optional<bool> collision = paulista::collision::detect(xs, ys);
+    ASSERT_TRUE(collision);
+    EXPECT_FALSE(*collision);
+}
+
 int
 main(int argc, char** argv) {
     testing::InitGoogleTest(&argc, argv);

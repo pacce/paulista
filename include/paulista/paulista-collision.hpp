@@ -28,7 +28,7 @@ namespace collision {
         if (xs.empty() or ys.empty()) {
             return std::nullopt;
         } else {
-            return std::nullopt;
+            return false;
         }
     }
 } // namespace collision
