@@ -53,6 +53,28 @@ RC_GTEST_PROP(SUBTRACT, ANTICOMMUTATIVE, (const Meter& xs, const Meter& ys)) {
     EXPECT_EQ(xs - ys, -(ys - xs));
 }
 
+RC_GTEST_PROP(MULTIPLICATION, NEUTRAL, (const Meter& xs)) {
+    EXPECT_EQ(xs * 1, xs);
+    EXPECT_EQ(1 * xs, xs);
+}
+
+RC_GTEST_PROP(MULTIPLICATION, ZERO, (const Meter& xs)) {
+    Meter zero;
+    EXPECT_EQ(xs * 0, zero);
+}
+
+RC_GTEST_PROP(MULTIPLICATION, DOUBLE, (const Meter& xs)) {
+    EXPECT_EQ(xs * 2, xs + xs);
+}
+
+RC_GTEST_PROP(MULTIPLICATION, COMMUTATIVE, (const Meter& xs, std::uint8_t v)) {
+    EXPECT_EQ(xs * v, v * xs);
+}
+
+RC_GTEST_PROP(DIVISION, NEUTRAL, (const Meter& xs)) {
+    EXPECT_EQ(xs / 1, xs);
+}
+
 int
 main(int argc, char** argv) {
     testing::InitGoogleTest(&argc, argv);

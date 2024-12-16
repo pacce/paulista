@@ -39,6 +39,18 @@ namespace dimension {
                 value_ -= rhs.value_; return *this;
             }
 
+            Meter&
+            operator*=(int32_t value) {
+                value_ *= value;
+                return *this;
+            }
+
+            Meter&
+            operator/=(int32_t value) {
+                value_ /= value;
+                return *this;
+            }
+
             friend Meter
             operator+(Meter lhs, const Meter& rhs) {
                 lhs += rhs; return lhs;
@@ -55,6 +67,21 @@ namespace dimension {
                 result.value_ -= lhs.value_;
 
                 return result;
+            }
+
+            friend Meter
+            operator*(std::int32_t value, Meter p) {
+                p *= value; return p;
+            }
+
+            friend Meter
+            operator*(Meter p, std::int32_t value) {
+                p *= value; return p;
+            }
+
+            friend Meter
+            operator/(Meter p, std::int32_t value) {
+                p /= value; return p;
             }
 
             friend std::ostream&
