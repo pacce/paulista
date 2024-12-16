@@ -15,7 +15,7 @@ namespace dimension {
     class Meter {
         public:
             Meter() : value_(0) {}
-            Meter(std::int8_t value) : value_(value) {}
+            Meter(std::int32_t value) : value_(value) {}
 
             friend std::strong_ordering
             operator<=>(const Meter& lhs, const Meter& rhs) {
@@ -89,7 +89,7 @@ namespace dimension {
                 return os << static_cast<std::int32_t>(p.value_) << "m";
             }
         private:
-            std::int8_t value_;
+            std::int32_t value_;
     };
 } // namespace dimension
 } // namespace paulista
