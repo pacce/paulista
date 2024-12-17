@@ -12,6 +12,30 @@ namespace dimension {
     class Millimeter;
     class Micrometer;
 
+    template <typename T> 
+    struct is_dimension : public std::false_type {};
+
+    template<> struct is_dimension<Meter> : public std::true_type {};
+    template<> struct is_dimension<Decimeter> : public std::true_type {};
+    template<> struct is_dimension<Centimeter> : public std::true_type {};
+    template<> struct is_dimension<Millimeter> : public std::true_type {};
+    template<> struct is_dimension<Micrometer> : public std::true_type {};
+    template<> struct is_dimension<Meter&> : public std::true_type {};
+    template<> struct is_dimension<Decimeter&> : public std::true_type {};
+    template<> struct is_dimension<Centimeter&> : public std::true_type {};
+    template<> struct is_dimension<Millimeter&> : public std::true_type {};
+    template<> struct is_dimension<Micrometer&> : public std::true_type {};
+    template<> struct is_dimension<const Meter> : public std::true_type {};
+    template<> struct is_dimension<const Decimeter> : public std::true_type {};
+    template<> struct is_dimension<const Centimeter> : public std::true_type {};
+    template<> struct is_dimension<const Millimeter> : public std::true_type {};
+    template<> struct is_dimension<const Micrometer> : public std::true_type {};
+    template<> struct is_dimension<const Meter&> : public std::true_type {};
+    template<> struct is_dimension<const Decimeter&> : public std::true_type {};
+    template<> struct is_dimension<const Centimeter&> : public std::true_type {};
+    template<> struct is_dimension<const Millimeter&> : public std::true_type {};
+    template<> struct is_dimension<const Micrometer&> : public std::true_type {};
+
     class Meter {
         public:
             Meter() : value_(0) {}

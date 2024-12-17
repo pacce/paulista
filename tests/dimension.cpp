@@ -340,6 +340,33 @@ TEST(MICROMETER, CONVERSION) {
     EXPECT_EQ(1e6, static_cast<std::int32_t>(            unit));
 }
 
+TEST(DIMENSION, TRAIT) {
+    ASSERT_TRUE(paulista::dimension::is_dimension<Meter>::value);
+    ASSERT_TRUE(paulista::dimension::is_dimension<Meter&>::value);
+    ASSERT_TRUE(paulista::dimension::is_dimension<const Meter>::value);
+    ASSERT_TRUE(paulista::dimension::is_dimension<const Meter&>::value);
+
+    ASSERT_TRUE(paulista::dimension::is_dimension<Decimeter>::value);
+    ASSERT_TRUE(paulista::dimension::is_dimension<Decimeter&>::value);
+    ASSERT_TRUE(paulista::dimension::is_dimension<const Decimeter>::value);
+    ASSERT_TRUE(paulista::dimension::is_dimension<const Decimeter&>::value);
+
+    ASSERT_TRUE(paulista::dimension::is_dimension<Centimeter>::value);
+    ASSERT_TRUE(paulista::dimension::is_dimension<Centimeter&>::value);
+    ASSERT_TRUE(paulista::dimension::is_dimension<const Centimeter>::value);
+    ASSERT_TRUE(paulista::dimension::is_dimension<const Centimeter&>::value);
+
+    ASSERT_TRUE(paulista::dimension::is_dimension<Millimeter>::value);
+    ASSERT_TRUE(paulista::dimension::is_dimension<Millimeter&>::value);
+    ASSERT_TRUE(paulista::dimension::is_dimension<const Millimeter>::value);
+    ASSERT_TRUE(paulista::dimension::is_dimension<const Millimeter&>::value);
+
+    ASSERT_TRUE(paulista::dimension::is_dimension<Micrometer>::value);
+    ASSERT_TRUE(paulista::dimension::is_dimension<Micrometer&>::value);
+    ASSERT_TRUE(paulista::dimension::is_dimension<const Micrometer>::value);
+    ASSERT_TRUE(paulista::dimension::is_dimension<const Micrometer&>::value);
+}
+
 int
 main(int argc, char** argv) {
     testing::InitGoogleTest(&argc, argv);
