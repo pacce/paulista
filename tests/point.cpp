@@ -2,7 +2,9 @@
 #include <paulista/paulista.hpp>
 #include <rapidcheck/gtest.h>
 
-using paulista::tridimensional::Point;
+using Millimeter    = paulista::dimension::Millimeter;
+using Micrometer    = paulista::dimension::Micrometer;
+using Point         = paulista::tridimensional::Point<Millimeter>;
 
 namespace rc {
     template<>
@@ -121,11 +123,11 @@ RC_GTEST_PROP(DOT, SCALAR, (const Point& xs, const Point& ys, std::uint8_t value
 }
 
 TEST(CENTROID, EMPTY) {
-    EXPECT_FALSE(paulista::tridimensional::point::centroid({}));
+    EXPECT_FALSE(paulista::tridimensional::point::centroid<Millimeter>({}));
 }
 
 RC_GTEST_PROP(CENTROID, SINGLE, (const Point& xs)) {
-    std::optional<Point> c = paulista::tridimensional::point::centroid({xs});
+    std::optional<Point> c = paulista::tridimensional::point::centroid<Millimeter>({xs});
     ASSERT_TRUE(c);
     EXPECT_EQ(c, xs);
 }
@@ -133,7 +135,7 @@ RC_GTEST_PROP(CENTROID, SINGLE, (const Point& xs)) {
 RC_GTEST_PROP(CENTROID, CONSTANT, (const Point& xs, std::uint8_t size)) {
     RC_PRE(size > 0);
 
-    std::optional<Point> c = paulista::tridimensional::point::centroid({size, xs});
+    std::optional<Point> c = paulista::tridimensional::point::centroid<Millimeter>({size, xs});
     ASSERT_TRUE(c);
     EXPECT_EQ(c, xs);
 }
@@ -142,7 +144,7 @@ RC_GTEST_PROP(CENTROID, PROGRESSION, (std::uint8_t size)) {
     RC_PRE(size > 0);
 
     std::vector<Point> ps;
-    for (paulista::dimension::Millimeter i = 0; i < size; i++) {
+    for (std::int32_t i = 0; i < size; i++) {
         ps.emplace_back(i, i, i);
     }
     Point mean = (ps.front() + ps.back()) / 2;

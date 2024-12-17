@@ -6,74 +6,64 @@
 #include <ostream>
 #include <vector>
 
+#include "paulista-dimension.hpp"
+
 namespace paulista {
-namespace dimension {
-    using Millimeter = std::int32_t;
-    using Micrometer = std::int32_t;
-} // namespace dimension
 namespace tridimensional {
+    template <typename T>
     class Point {
+        static_assert(dimension::is_dimension<T>::value);
         public:
             Point() : x_(0), y_(0), z_(0) {}
-            Point(dimension::Millimeter x, dimension::Millimeter y, dimension::Millimeter z)
-                : x_(x * 1000)
-                , y_(y * 1000)
-                , z_(z * 1000)
-            {}
+            Point(T x, T y, T z) : x_(x), y_(y), z_(z) {}
 
             friend bool
-            operator==(const Point& lhs, const Point& rhs) {
-                return  (lhs.x_ / 1000) == (rhs.x_ / 1000)
-                    and (lhs.y_ / 1000) == (rhs.y_ / 1000)
-                    and (lhs.z_ / 1000) == (rhs.z_ / 1000)
+            operator==(const Point<T>& lhs, const Point<T>& rhs) {
+                return  (lhs.x_ == rhs.x_)
+                    and (lhs.y_ == rhs.y_)
+                    and (lhs.z_ == rhs.z_)
                     ;
             }
 
             friend bool
-            operator!=(const Point& lhs, const Point& rhs) {
+            operator!=(const Point<T>& lhs, const Point<T>& rhs) {
                 return not (lhs == rhs);
             }
 
-            Point&
-            operator+=(const Point& other) {
+            friend std::ostream&
+            operator<<(std::ostream& os, const Point<T>& p) {
+                return os << "(" << p.x_ << "," << p.y_ << "," << p.z_ << ")";
+            }
+
+            Point<T>&
+            operator+=(const Point<T>& other) {
                 x_ += other.x_;
                 y_ += other.y_;
                 z_ += other.z_;
                 return *this;
             }
 
-            Point&
-            operator-=(const Point& other) {
+            friend Point<T>
+            operator+(Point<T> lhs, const Point<T>& rhs) {
+                lhs += rhs; return lhs;
+            }
+
+            Point<T>&
+            operator-=(const Point<T>& other) {
                 x_ -= other.x_;
                 y_ -= other.y_;
                 z_ -= other.z_;
                 return *this;
             }
 
-            Point&
-            operator*=(int32_t value) {
-                x_ *= value;
-                y_ *= value;
-                z_ *= value;
-                return *this;
+            friend Point<T>
+            operator-(Point<T> lhs, const Point<T>& rhs) {
+                lhs -= rhs; return lhs;
             }
 
-            Point&
-            operator/=(int32_t value) {
-                x_ /= value;
-                y_ /= value;
-                z_ /= value;
-                return *this;
-            }
-
-            friend Point
-            operator+(Point lhs, const Point& rhs) {
-                lhs += rhs; return lhs;
-            }
-
-            friend Point
-            operator-(const Point& rhs) {
-                Point p;
+            friend Point<T>
+            operator-(const Point<T>& rhs) {
+                Point<T> p;
                 p.x_ = -rhs.x_;
                 p.y_ = -rhs.y_;
                 p.z_ = -rhs.z_;
@@ -81,52 +71,66 @@ namespace tridimensional {
                 return p;
             }
 
-            friend Point
-            operator-(Point lhs, const Point& rhs) {
-                lhs -= rhs; return lhs;
+            Point<T>&
+            operator*=(int32_t value) {
+                x_ *= value;
+                y_ *= value;
+                z_ *= value;
+                return *this;
             }
 
-            friend Point
-            operator*(std::int32_t value, Point p) {
+            friend Point<T>
+            operator*(std::int32_t value, Point<T> p) {
                 p *= value; return p;
             }
 
-            friend Point
-            operator*(Point p, std::int32_t value) {
+            friend Point<T>
+            operator*(Point<T> p, std::int32_t value) {
                 p *= value; return p;
             }
 
-            friend Point
-            operator/(Point p, std::int32_t value) {
+            Point<T>&
+            operator/=(int32_t value) {
+                x_ /= value;
+                y_ /= value;
+                z_ /= value;
+                return *this;
+            }
+
+            friend Point<T>
+            operator/(Point<T> p, std::int32_t value) {
                 p /= value; return p;
             }
 
-            dimension::Millimeter
-            dot(const Point& lhs) const {
-                return  (x_ / 1000) * (lhs.x_ / 1000)
-                    +   (y_ / 1000) * (lhs.y_ / 1000)
-                    +   (z_ / 1000) * (lhs.z_ / 1000)
+            T
+            dot(const Point<T>& lhs) const {
+                return  (x_ * static_cast<std::int32_t>(lhs.x_))
+                    +   (y_ * static_cast<std::int32_t>(lhs.y_))
+                    +   (z_ * static_cast<std::int32_t>(lhs.z_))
                     ;
             }
 
-            friend std::ostream&
-            operator<<(std::ostream& os, const Point& p) {
-                return os   << "(" << (p.x_ / 1000)
-                            << "," << (p.y_ / 1000)
-                            << "," << (p.z_ / 1000)
-                            << ")"
-                            ;
-            }
-        private:
-            dimension::Micrometer x_;
-            dimension::Micrometer y_;
-            dimension::Micrometer z_;
-    };
+            template <typename U>
+            explicit operator Point<U>() const { 
+                static_assert(dimension::is_dimension<U>::value);
 
-    using Vector = Point;
+                return Point<U>(
+                          static_cast<U>(x_)
+                        , static_cast<U>(y_)
+                        , static_cast<U>(z_)
+                        );
+            };
+        private:
+            T x_;
+            T y_;
+            T z_;
+    };
 namespace point {
-    inline std::optional<Point>
-    centroid(const std::vector<Point>& ps) {
+    template <typename T>
+    inline std::optional<Point<T>>
+    centroid(const std::vector<Point<T>>& ps) {
+        static_assert(dimension::is_dimension<T>::value);
+
         if (ps.empty()) {
             return std::nullopt;
         } else if (ps.size() == 1) {
@@ -134,7 +138,7 @@ namespace point {
         } else {
             std::int32_t denominator = ps.size();
 
-            Point p = ps.front();
+            Point<T> p = ps.front();
             for (std::int32_t i = 1; i < denominator; i++) { p += ps[i]; }
             return (p / denominator);
         }

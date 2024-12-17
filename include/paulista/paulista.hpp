@@ -3,7 +3,7 @@
 
 // #include "paulista-collision.hpp"
 #include "paulista-dimension.hpp"
-// #include "paulista-point.hpp"
+#include "paulista-point.hpp"
 // #include "paulista-simplex.hpp"
 
 #endif // PAULISTA_HPP__
