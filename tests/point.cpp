@@ -3,7 +3,6 @@
 #include <rapidcheck/gtest.h>
 
 using Millimeter    = paulista::dimension::Millimeter;
-using Micrometer    = paulista::dimension::Micrometer;
 using Point         = paulista::tridimensional::Point<Millimeter>;
 
 namespace rc {
@@ -120,6 +119,20 @@ RC_GTEST_PROP(DOT, COMMUTATIVE, (const Point& xs, const Point& ys)) {
 RC_GTEST_PROP(DOT, SCALAR, (const Point& xs, const Point& ys, std::uint8_t value)) {
     EXPECT_EQ((value * xs).dot(ys), value * (xs.dot(ys)));
     EXPECT_EQ((value * xs).dot(ys),   xs.dot(value * ys));
+}
+
+TEST(CROSS, D1) {
+    Point x(1, 0, 0);
+    Point y(0, 1, 0);
+    Point z(0, 0, 1);
+
+    EXPECT_EQ(x.cross(y), z);
+    EXPECT_EQ(y.cross(z), x);
+    EXPECT_EQ(z.cross(x), y);
+
+    EXPECT_EQ(y.cross(x), -z);
+    EXPECT_EQ(z.cross(y), -x);
+    EXPECT_EQ(x.cross(z), -y);
 }
 
 TEST(CENTROID, EMPTY) {
