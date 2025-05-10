@@ -1,5 +1,5 @@
-#ifndef PAULISTA_POINT_HPP__
-#define PAULISTA_POINT_HPP__
+#ifndef PAULISTA_GEOMETRY_POINT_HPP__
+#define PAULISTA_GEOMETRY_POINT_HPP__
 
 #include <cstdint>
 #include <optional>
@@ -9,6 +9,7 @@
 #include "paulista-dimension.hpp"
 
 namespace paulista {
+namespace geometry {
 namespace tridimensional {
     template <typename T>
     class Point {
@@ -158,6 +159,7 @@ namespace point {
     };
 } // namespace point
 } // namespace tridimensional
+} // namespace geometry
 } // namespace paulista
 
-#endif // PAULISTA_POINT_HPP__
+#endif // PAULISTA_GEOMETRY_POINT_HPP__

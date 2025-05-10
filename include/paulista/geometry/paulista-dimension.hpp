@@ -1,10 +1,11 @@
-#ifndef PAULISTA_DIMENSION_HPP__
-#define PAULISTA_DIMENSION_HPP__
+#ifndef PAULISTA_GEOMETRY_DIMENSION_HPP__
+#define PAULISTA_GEOMETRY_DIMENSION_HPP__
 
 #include <cstdint>
 #include <ostream>
 
 namespace paulista {
+namespace geometry {
 namespace dimension {
     class Meter;
     class Decimeter;
@@ -546,6 +547,7 @@ namespace dimension {
     inline Micrometer::operator Centimeter() const  { return Centimeter(*this); }
     inline Micrometer::operator Millimeter() const  { return Millimeter(*this); }
 } // namespace dimension
+} // namespace geometry
 } // namespace paulista
 
-#endif // PAULISTA_DIMENSION_HPP__
+#endif // PAULISTA_GEOMETRY_DIMENSION_HPP__

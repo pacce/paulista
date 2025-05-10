@@ -2,11 +2,11 @@
 #include <paulista/paulista.hpp>
 #include <rapidcheck/gtest.h>
 
-using paulista::dimension::Meter;
-using paulista::dimension::Decimeter;
-using paulista::dimension::Centimeter;
-using paulista::dimension::Millimeter;
-using paulista::dimension::Micrometer;
+using paulista::geometry::dimension::Meter;
+using paulista::geometry::dimension::Decimeter;
+using paulista::geometry::dimension::Centimeter;
+using paulista::geometry::dimension::Millimeter;
+using paulista::geometry::dimension::Micrometer;
 
 namespace rc {
     template<>
@@ -341,30 +341,30 @@ TEST(MICROMETER, CONVERSION) {
 }
 
 TEST(DIMENSION, TRAIT) {
-    ASSERT_TRUE(paulista::dimension::is_dimension<Meter>::value);
-    ASSERT_TRUE(paulista::dimension::is_dimension<Meter&>::value);
-    ASSERT_TRUE(paulista::dimension::is_dimension<const Meter>::value);
-    ASSERT_TRUE(paulista::dimension::is_dimension<const Meter&>::value);
+    ASSERT_TRUE(paulista::geometry::dimension::is_dimension<Meter>::value);
+    ASSERT_TRUE(paulista::geometry::dimension::is_dimension<Meter&>::value);
+    ASSERT_TRUE(paulista::geometry::dimension::is_dimension<const Meter>::value);
+    ASSERT_TRUE(paulista::geometry::dimension::is_dimension<const Meter&>::value);
 
-    ASSERT_TRUE(paulista::dimension::is_dimension<Decimeter>::value);
-    ASSERT_TRUE(paulista::dimension::is_dimension<Decimeter&>::value);
-    ASSERT_TRUE(paulista::dimension::is_dimension<const Decimeter>::value);
-    ASSERT_TRUE(paulista::dimension::is_dimension<const Decimeter&>::value);
+    ASSERT_TRUE(paulista::geometry::dimension::is_dimension<Decimeter>::value);
+    ASSERT_TRUE(paulista::geometry::dimension::is_dimension<Decimeter&>::value);
+    ASSERT_TRUE(paulista::geometry::dimension::is_dimension<const Decimeter>::value);
+    ASSERT_TRUE(paulista::geometry::dimension::is_dimension<const Decimeter&>::value);
 
-    ASSERT_TRUE(paulista::dimension::is_dimension<Centimeter>::value);
-    ASSERT_TRUE(paulista::dimension::is_dimension<Centimeter&>::value);
-    ASSERT_TRUE(paulista::dimension::is_dimension<const Centimeter>::value);
-    ASSERT_TRUE(paulista::dimension::is_dimension<const Centimeter&>::value);
+    ASSERT_TRUE(paulista::geometry::dimension::is_dimension<Centimeter>::value);
+    ASSERT_TRUE(paulista::geometry::dimension::is_dimension<Centimeter&>::value);
+    ASSERT_TRUE(paulista::geometry::dimension::is_dimension<const Centimeter>::value);
+    ASSERT_TRUE(paulista::geometry::dimension::is_dimension<const Centimeter&>::value);
 
-    ASSERT_TRUE(paulista::dimension::is_dimension<Millimeter>::value);
-    ASSERT_TRUE(paulista::dimension::is_dimension<Millimeter&>::value);
-    ASSERT_TRUE(paulista::dimension::is_dimension<const Millimeter>::value);
-    ASSERT_TRUE(paulista::dimension::is_dimension<const Millimeter&>::value);
+    ASSERT_TRUE(paulista::geometry::dimension::is_dimension<Millimeter>::value);
+    ASSERT_TRUE(paulista::geometry::dimension::is_dimension<Millimeter&>::value);
+    ASSERT_TRUE(paulista::geometry::dimension::is_dimension<const Millimeter>::value);
+    ASSERT_TRUE(paulista::geometry::dimension::is_dimension<const Millimeter&>::value);
 
-    ASSERT_TRUE(paulista::dimension::is_dimension<Micrometer>::value);
-    ASSERT_TRUE(paulista::dimension::is_dimension<Micrometer&>::value);
-    ASSERT_TRUE(paulista::dimension::is_dimension<const Micrometer>::value);
-    ASSERT_TRUE(paulista::dimension::is_dimension<const Micrometer&>::value);
+    ASSERT_TRUE(paulista::geometry::dimension::is_dimension<Micrometer>::value);
+    ASSERT_TRUE(paulista::geometry::dimension::is_dimension<Micrometer&>::value);
+    ASSERT_TRUE(paulista::geometry::dimension::is_dimension<const Micrometer>::value);
+    ASSERT_TRUE(paulista::geometry::dimension::is_dimension<const Micrometer&>::value);
 }
 
 int
