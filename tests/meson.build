@@ -12,3 +12,4 @@ dependencies  = [gtest, rapidcheck, rapidcheck_gtest, paulista_dep]
 
 test('dimension', executable('dimension', 'dimension.cpp', dependencies: dependencies))
 test(    'point', executable(    'point',     'point.cpp', dependencies: dependencies))
+test(   'domain', executable(   'domain',    'domain.cpp', dependencies: dependencies))

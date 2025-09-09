@@ -2,7 +2,7 @@ project('paulista', 'cpp', version: '0.1.0', default_options : ['warning_level=3
 
 sources       = []
 headers       = include_directories('include')
-dependencies  = [dependency('boost')]
+dependencies  = []
 
 paulista_dep = declare_dependency(
     include_directories : headers
