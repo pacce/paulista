@@ -63,7 +63,7 @@ namespace visitor {
 } // namespace element
 
     using Element = std::variant<
-        element::Triangle, 
+        element::Triangle,
         element::Tetrahedron
         >;
     using Elements = std::vector<Element>;

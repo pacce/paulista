@@ -208,7 +208,7 @@ TEST(DOMAIN, INDICES) {
 TEST(DOMAIN, EMPTY) {
     using Node      = Node<Meter>;
     using Domain    = paulista::Domain<Meter>;
-    
+
     Domain domain;
     std::vector<std::optional<Node>> actual = domain.centroids();
     EXPECT_TRUE(actual.empty());
