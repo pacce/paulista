@@ -73,6 +73,28 @@ namespace visitor {
     struct Domain {
         domain::Nodes<Precision>    nodes;
         domain::Elements            elements;
+
+        std::vector<std::optional<domain::Centroid<Precision>>>
+        centroids() const {
+            using domain::Element;
+            using domain::element::Triangle;
+            using domain::element::Tetrahedron;
+            using domain::element::is_triangle;
+            using domain::element::is_tetrahedron;
+
+            using Centroid  = domain::Centroid<Precision>;
+
+            std::vector<std::optional<Centroid>> cs;
+            cs.reserve(elements.size());
+            for (const Element& element : elements) {
+                if (std::visit(is_triangle, element)) {
+                    cs.push_back(std::get<Triangle>(element).centroid(nodes));
+                } else if (std::visit(is_tetrahedron, element)) {
+                    cs.push_back(std::get<Tetrahedron>(element).centroid(nodes));
+                }
+            }
+            return cs;
+        }
     };
 } // namespace paulista
 

@@ -10,6 +10,7 @@ gtest               = dependency('gtest')
 
 dependencies  = [gtest, rapidcheck, rapidcheck_gtest, paulista_dep]
 
-test('dimension', executable('dimension', 'dimension.cpp', dependencies: dependencies))
-test(    'point', executable(    'point',     'point.cpp', dependencies: dependencies))
-test(   'domain', executable(   'domain',    'domain.cpp', dependencies: dependencies))
+test(      'dimension', executable(      'dimension',       'dimension.cpp', dependencies: dependencies))
+test(          'point', executable(          'point',           'point.cpp', dependencies: dependencies))
+test( 'domain-visitor', executable( 'domain-visitor',  'domain-visitor.cpp', dependencies: dependencies))
+test('domain-centroid', executable('domain-centroid', 'domain-centroid.cpp', dependencies: dependencies))
