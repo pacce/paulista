@@ -10,7 +10,6 @@ using paulista::domain::Node;
 using paulista::domain::Nodes;
 
 using paulista::geometry::dimension::Meter;
-using paulista::geometry::dimension::Centimeter;
 using paulista::geometry::tridimensional::Point;
 
 TEST(TRIANGLE, SIMPLE) {

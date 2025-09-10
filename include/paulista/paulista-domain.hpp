@@ -1,6 +1,7 @@
 #ifndef PAULISTA_DOMAIN_HPP__
 #define PAULISTA_DOMAIN_HPP__
 
+#include <cmath>
 #include <variant>
 #include <type_traits>
 #include "paulista-geometry.hpp"
@@ -36,6 +37,24 @@ namespace visitor {
 
             Nodes<T> ps = {ns[u], ns[v], ns[w]};
             return paulista::geometry::tridimensional::point::centroid(ps);
+        }
+
+        template <typename T>
+        std::optional<T>
+        area(const Nodes<T>& ns) const {
+            if (u >= ns.size()) { return std::nullopt; }
+            if (v >= ns.size()) { return std::nullopt; }
+            if (w >= ns.size()) { return std::nullopt; }
+
+            const Node<T>& p0 = ns[u];
+            const Node<T>& p1 = ns[v];
+            const Node<T>& p2 = ns[w];
+            
+            const Node<T> normal    = (p1 - p0).cross(p2 - p0);
+            std::sqrt(normal.dot(normal));
+            std::int32_t value      = static_cast<std::int32_t>(normal.dot(normal));
+
+            return T(std::sqrt(value) / 2);
         }
     };
 
