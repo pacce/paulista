@@ -50,12 +50,12 @@ namespace dimension {
             friend std::strong_ordering
             operator<=>(const Meter& lhs, const Meter& rhs);
 
-            friend bool operator==(const Meter& lhs, const Meter& rhs) = default;
-            friend bool operator!=(const Meter& lhs, const Meter& rhs) = default;
-            friend bool operator<(const Meter& lhs, const Meter& rhs) = default;
-            friend bool operator<=(const Meter& lhs, const Meter& rhs) = default;
-            friend bool operator>(const Meter& lhs, const Meter& rhs) = default;
-            friend bool operator>=(const Meter& lhs, const Meter& rhs) = default;
+            friend bool operator==(const Meter& lhs, const Meter& rhs);
+            friend bool operator!=(const Meter& lhs, const Meter& rhs);
+            friend bool operator<(const Meter& lhs, const Meter& rhs);
+            friend bool operator<=(const Meter& lhs, const Meter& rhs);
+            friend bool operator>(const Meter& lhs, const Meter& rhs);
+            friend bool operator>=(const Meter& lhs, const Meter& rhs);
 
             Meter& operator+=(const Meter& rhs);
             Meter& operator-=(const Meter& rhs);
@@ -96,12 +96,12 @@ namespace dimension {
             friend std::strong_ordering
             operator<=>(const Decimeter& lhs, const Decimeter& rhs);
 
-            friend bool operator==(const Decimeter& lhs, const Decimeter& rhs) = default;
-            friend bool operator!=(const Decimeter& lhs, const Decimeter& rhs) = default;
-            friend bool operator<(const Decimeter& lhs, const Decimeter& rhs) = default;
-            friend bool operator<=(const Decimeter& lhs, const Decimeter& rhs) = default;
-            friend bool operator>(const Decimeter& lhs, const Decimeter& rhs) = default;
-            friend bool operator>=(const Decimeter& lhs, const Decimeter& rhs) = default;
+            friend bool operator==(const Decimeter& lhs, const Decimeter& rhs);
+            friend bool operator!=(const Decimeter& lhs, const Decimeter& rhs);
+            friend bool operator<(const Decimeter& lhs, const Decimeter& rhs);
+            friend bool operator<=(const Decimeter& lhs, const Decimeter& rhs);
+            friend bool operator>(const Decimeter& lhs, const Decimeter& rhs);
+            friend bool operator>=(const Decimeter& lhs, const Decimeter& rhs);
 
             Decimeter& operator+=(const Decimeter& rhs);
             Decimeter& operator-=(const Decimeter& rhs);
@@ -142,12 +142,12 @@ namespace dimension {
             friend std::strong_ordering
             operator<=>(const Centimeter& lhs, const Centimeter& rhs);
 
-            friend bool operator==(const Centimeter& lhs, const Centimeter& rhs) = default;
-            friend bool operator!=(const Centimeter& lhs, const Centimeter& rhs) = default;
-            friend bool operator<(const Centimeter& lhs, const Centimeter& rhs) = default;
-            friend bool operator<=(const Centimeter& lhs, const Centimeter& rhs) = default;
-            friend bool operator>(const Centimeter& lhs, const Centimeter& rhs) = default;
-            friend bool operator>=(const Centimeter& lhs, const Centimeter& rhs) = default;
+            friend bool operator==(const Centimeter& lhs, const Centimeter& rhs);
+            friend bool operator!=(const Centimeter& lhs, const Centimeter& rhs);
+            friend bool operator<(const Centimeter& lhs, const Centimeter& rhs);
+            friend bool operator<=(const Centimeter& lhs, const Centimeter& rhs);
+            friend bool operator>(const Centimeter& lhs, const Centimeter& rhs);
+            friend bool operator>=(const Centimeter& lhs, const Centimeter& rhs);
 
             Centimeter& operator+=(const Centimeter& rhs);
             Centimeter& operator-=(const Centimeter& rhs);
@@ -188,12 +188,12 @@ namespace dimension {
             friend std::strong_ordering
             operator<=>(const Millimeter& lhs, const Millimeter& rhs);
 
-            friend bool operator==(const Millimeter& lhs, const Millimeter& rhs) = default;
-            friend bool operator!=(const Millimeter& lhs, const Millimeter& rhs) = default;
-            friend bool operator<(const Millimeter& lhs, const Millimeter& rhs) = default;
-            friend bool operator<=(const Millimeter& lhs, const Millimeter& rhs) = default;
-            friend bool operator>(const Millimeter& lhs, const Millimeter& rhs) = default;
-            friend bool operator>=(const Millimeter& lhs, const Millimeter& rhs) = default;
+            friend bool operator==(const Millimeter& lhs, const Millimeter& rhs);
+            friend bool operator!=(const Millimeter& lhs, const Millimeter& rhs);
+            friend bool operator<(const Millimeter& lhs, const Millimeter& rhs);
+            friend bool operator<=(const Millimeter& lhs, const Millimeter& rhs);
+            friend bool operator>(const Millimeter& lhs, const Millimeter& rhs);
+            friend bool operator>=(const Millimeter& lhs, const Millimeter& rhs);
 
             Millimeter& operator+=(const Millimeter& rhs);
             Millimeter& operator-=(const Millimeter& rhs);
@@ -234,12 +234,12 @@ namespace dimension {
             friend std::strong_ordering
             operator<=>(const Micrometer& lhs, const Micrometer& rhs);
 
-            friend bool operator==(const Micrometer& lhs, const Micrometer& rhs) = default;
-            friend bool operator!=(const Micrometer& lhs, const Micrometer& rhs) = default;
-            friend bool operator<(const Micrometer& lhs, const Micrometer& rhs) = default;
-            friend bool operator<=(const Micrometer& lhs, const Micrometer& rhs) = default;
-            friend bool operator>(const Micrometer& lhs, const Micrometer& rhs) = default;
-            friend bool operator>=(const Micrometer& lhs, const Micrometer& rhs) = default;
+            friend bool operator==(const Micrometer& lhs, const Micrometer& rhs);
+            friend bool operator!=(const Micrometer& lhs, const Micrometer& rhs);
+            friend bool operator<(const Micrometer& lhs, const Micrometer& rhs);
+            friend bool operator<=(const Micrometer& lhs, const Micrometer& rhs);
+            friend bool operator>(const Micrometer& lhs, const Micrometer& rhs);
+            friend bool operator>=(const Micrometer& lhs, const Micrometer& rhs);
 
             Micrometer& operator+=(const Micrometer& rhs);
             Micrometer& operator-=(const Micrometer& rhs);

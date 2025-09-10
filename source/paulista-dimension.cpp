@@ -16,6 +16,36 @@ namespace dimension {
         return lhs.value_ <=> rhs.value_;
     }
 
+    bool 
+    operator==(const Meter& lhs, const Meter& rhs) {
+        return (lhs <=> rhs) == 0;
+    }
+
+    bool 
+    operator!=(const Meter& lhs, const Meter& rhs) {
+        return (lhs <=> rhs) != 0;
+    }
+
+    bool 
+    operator<(const Meter& lhs, const Meter& rhs) {
+        return (lhs <=> rhs) < 0;
+    }
+
+    bool 
+    operator<=(const Meter& lhs, const Meter& rhs) {
+        return (lhs <=> rhs) <= 0;
+    }
+
+    bool 
+    operator>(const Meter& lhs, const Meter& rhs) {
+        return (lhs <=> rhs) > 0;
+    }
+
+    bool 
+    operator>=(const Meter& lhs, const Meter& rhs) {
+        return (lhs <=> rhs) >= 0;
+    }
+
     Meter&
     Meter::operator+=(const Meter& rhs) {
         value_ += rhs.value_; return *this;
@@ -87,6 +117,36 @@ namespace dimension {
     std::strong_ordering
     operator<=>(const Decimeter& lhs, const Decimeter& rhs) {
         return lhs.value_ <=> rhs.value_;
+    }
+
+    bool 
+    operator==(const Decimeter& lhs, const Decimeter& rhs) {
+        return (lhs <=> rhs) == 0;
+    }
+
+    bool 
+    operator!=(const Decimeter& lhs, const Decimeter& rhs) {
+        return (lhs <=> rhs) != 0;
+    }
+
+    bool 
+    operator<(const Decimeter& lhs, const Decimeter& rhs) {
+        return (lhs <=> rhs) < 0;
+    }
+
+    bool 
+    operator<=(const Decimeter& lhs, const Decimeter& rhs) {
+        return (lhs <=> rhs) <= 0;
+    }
+
+    bool 
+    operator>(const Decimeter& lhs, const Decimeter& rhs) {
+        return (lhs <=> rhs) > 0;
+    }
+
+    bool 
+    operator>=(const Decimeter& lhs, const Decimeter& rhs) {
+        return (lhs <=> rhs) >= 0;
     }
 
     Decimeter&
@@ -162,6 +222,36 @@ namespace dimension {
         return lhs.value_ <=> rhs.value_;
     }
 
+    bool 
+    operator==(const Centimeter& lhs, const Centimeter& rhs) {
+        return (lhs <=> rhs) == 0;
+    }
+
+    bool 
+    operator!=(const Centimeter& lhs, const Centimeter& rhs) {
+        return (lhs <=> rhs) != 0;
+    }
+
+    bool 
+    operator<(const Centimeter& lhs, const Centimeter& rhs) {
+        return (lhs <=> rhs) < 0;
+    }
+
+    bool 
+    operator<=(const Centimeter& lhs, const Centimeter& rhs) {
+        return (lhs <=> rhs) <= 0;
+    }
+
+    bool 
+    operator>(const Centimeter& lhs, const Centimeter& rhs) {
+        return (lhs <=> rhs) > 0;
+    }
+
+    bool 
+    operator>=(const Centimeter& lhs, const Centimeter& rhs) {
+        return (lhs <=> rhs) >= 0;
+    }
+
     Centimeter&
     Centimeter::operator+=(const Centimeter& rhs) {
         value_ += rhs.value_; return *this;
@@ -235,6 +325,36 @@ namespace dimension {
         return lhs.value_ <=> rhs.value_;
     }
 
+    bool 
+    operator==(const Millimeter& lhs, const Millimeter& rhs) {
+        return (lhs <=> rhs) == 0;
+    }
+
+    bool 
+    operator!=(const Millimeter& lhs, const Millimeter& rhs) {
+        return (lhs <=> rhs) != 0;
+    }
+
+    bool 
+    operator<(const Millimeter& lhs, const Millimeter& rhs) {
+        return (lhs <=> rhs) < 0;
+    }
+
+    bool 
+    operator<=(const Millimeter& lhs, const Millimeter& rhs) {
+        return (lhs <=> rhs) <= 0;
+    }
+
+    bool 
+    operator>(const Millimeter& lhs, const Millimeter& rhs) {
+        return (lhs <=> rhs) > 0;
+    }
+
+    bool 
+    operator>=(const Millimeter& lhs, const Millimeter& rhs) {
+        return (lhs <=> rhs) >= 0;
+    }
+
     Millimeter&
     Millimeter::operator+=(const Millimeter& rhs) {
         value_ += rhs.value_; return *this;
@@ -306,6 +426,36 @@ namespace dimension {
     std::strong_ordering
     operator<=>(const Micrometer& lhs, const Micrometer& rhs) {
         return lhs.value_ <=> rhs.value_;
+    }
+
+    bool 
+    operator==(const Micrometer& lhs, const Micrometer& rhs) {
+        return (lhs <=> rhs) == 0;
+    }
+
+    bool 
+    operator!=(const Micrometer& lhs, const Micrometer& rhs) {
+        return (lhs <=> rhs) != 0;
+    }
+
+    bool 
+    operator<(const Micrometer& lhs, const Micrometer& rhs) {
+        return (lhs <=> rhs) < 0;
+    }
+
+    bool 
+    operator<=(const Micrometer& lhs, const Micrometer& rhs) {
+        return (lhs <=> rhs) <= 0;
+    }
+
+    bool 
+    operator>(const Micrometer& lhs, const Micrometer& rhs) {
+        return (lhs <=> rhs) > 0;
+    }
+
+    bool 
+    operator>=(const Micrometer& lhs, const Micrometer& rhs) {
+        return (lhs <=> rhs) >= 0;
     }
 
     Micrometer&
