@@ -51,7 +51,6 @@ namespace visitor {
             const Node<T>& p2 = ns[w];
             
             const Node<T> normal    = (p1 - p0).cross(p2 - p0);
-            std::sqrt(normal.dot(normal));
             std::int32_t value      = static_cast<std::int32_t>(normal.dot(normal));
 
             return T(std::sqrt(value) / 2);

@@ -39,8 +39,8 @@ namespace dimension {
 
     class Meter {
         public:
-            Meter() : value_(0) {}
-            Meter(std::int32_t value) : value_(value) {}
+            Meter();
+            Meter(std::int32_t value);
 
             Meter(const Decimeter& value);
             Meter(const Centimeter& value);
@@ -48,9 +48,7 @@ namespace dimension {
             Meter(const Micrometer& value);
 
             friend std::strong_ordering
-            operator<=>(const Meter& lhs, const Meter& rhs) {
-                return lhs.value_ <=> rhs.value_;
-            }
+            operator<=>(const Meter& lhs, const Meter& rhs);
 
             friend bool operator==(const Meter& lhs, const Meter& rhs) = default;
             friend bool operator!=(const Meter& lhs, const Meter& rhs) = default;
@@ -59,65 +57,21 @@ namespace dimension {
             friend bool operator>(const Meter& lhs, const Meter& rhs) = default;
             friend bool operator>=(const Meter& lhs, const Meter& rhs) = default;
 
-            Meter&
-            operator+=(const Meter& rhs) {
-                value_ += rhs.value_; return *this;
-            }
+            Meter& operator+=(const Meter& rhs);
+            Meter& operator-=(const Meter& rhs);
+            Meter& operator*=(int32_t value);
+            Meter& operator/=(int32_t value);
 
-            Meter&
-            operator-=(const Meter& rhs) {
-                value_ -= rhs.value_; return *this;
-            }
+            friend Meter operator+(Meter lhs, const Meter& rhs);
+            friend Meter operator-(Meter lhs, const Meter& rhs);
+            friend Meter operator-(const Meter& lhs);
 
-            Meter&
-            operator*=(int32_t value) {
-                value_ *= value;
-                return *this;
-            }
-
-            Meter&
-            operator/=(int32_t value) {
-                value_ /= value;
-                return *this;
-            }
-
-            friend Meter
-            operator+(Meter lhs, const Meter& rhs) {
-                lhs += rhs; return lhs;
-            }
-
-            friend Meter
-            operator-(Meter lhs, const Meter& rhs) {
-                lhs -= rhs; return lhs;
-            }
-
-            friend Meter
-            operator-(const Meter& lhs) {
-                Meter result;
-                result.value_ -= lhs.value_;
-
-                return result;
-            }
-
-            friend Meter
-            operator*(std::int32_t value, Meter p) {
-                p *= value; return p;
-            }
-
-            friend Meter
-            operator*(Meter p, std::int32_t value) {
-                p *= value; return p;
-            }
-
-            friend Meter
-            operator/(Meter p, std::int32_t value) {
-                p /= value; return p;
-            }
+            friend Meter operator*(std::int32_t value, Meter p);
+            friend Meter operator*(Meter p, std::int32_t value);
+            friend Meter operator/(Meter p, std::int32_t value);
 
             friend std::ostream&
-            operator<<(std::ostream& os, const Meter& p) {
-                return os << static_cast<std::int32_t>(p.value_) << "m";
-            }
+            operator<<(std::ostream& os, const Meter& p);
 
             explicit operator std::int32_t() const { return value_; }
 
@@ -497,10 +451,6 @@ namespace dimension {
             std::int32_t value_;
     };
 
-    inline Meter::Meter(const Decimeter&  value) : value_(static_cast<std::int32_t>(value) / 1e1){}
-    inline Meter::Meter(const Centimeter& value) : value_(static_cast<std::int32_t>(value) / 1e2){}
-    inline Meter::Meter(const Millimeter& value) : value_(static_cast<std::int32_t>(value) / 1e3){}
-    inline Meter::Meter(const Micrometer& value) : value_(static_cast<std::int32_t>(value) / 1e6){}
 
     inline Decimeter::Decimeter(const Meter&      value) : value_(static_cast<std::int32_t>(value) * 1e1){}
     inline Decimeter::Decimeter(const Centimeter& value) : value_(static_cast<std::int32_t>(value) / 1e1){}
