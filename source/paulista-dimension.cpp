@@ -542,7 +542,6 @@ namespace dimension {
     Micrometer::operator Decimeter() const   { return Decimeter(*this); }
     Micrometer::operator Centimeter() const  { return Centimeter(*this); }
     Micrometer::operator Millimeter() const  { return Millimeter(*this); }
-
 } // namespace dimension
 } // namespace geometry
 } // namespace paulista

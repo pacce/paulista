@@ -1,6 +1,7 @@
 #ifndef PAULISTA_GEOMETRY_DIMENSION_HPP__
 #define PAULISTA_GEOMETRY_DIMENSION_HPP__
 
+#include <cmath>
 #include <cstdint>
 #include <ostream>
 
@@ -266,6 +267,13 @@ namespace dimension {
         private:
             std::int32_t value_;
     };
+
+    template <typename T>
+    T
+    sqrt(T value) {
+        static_assert(is_dimension<T>::value);
+        return T(std::sqrt(static_cast<std::int32_t>(value)));
+    }
 } // namespace dimension
 } // namespace geometry
 } // namespace paulista

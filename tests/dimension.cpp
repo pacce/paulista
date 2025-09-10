@@ -108,6 +108,14 @@ TEST(METER, CONVERSION) {
     EXPECT_EQ(1e6, static_cast<std::int32_t>(Micrometer(unit)));
 }
 
+TEST(METER, SQRT) {
+    EXPECT_EQ(Meter(0), paulista::geometry::dimension::sqrt(Meter( 0)));
+    EXPECT_EQ(Meter(1), paulista::geometry::dimension::sqrt(Meter( 1)));
+    EXPECT_EQ(Meter(2), paulista::geometry::dimension::sqrt(Meter( 4)));
+    EXPECT_EQ(Meter(3), paulista::geometry::dimension::sqrt(Meter( 9)));
+    EXPECT_EQ(Meter(4), paulista::geometry::dimension::sqrt(Meter(16)));
+}
+
 TEST(DECIMETER, COMPARISON) {
     Decimeter zero;
     Decimeter one(1);
@@ -164,6 +172,14 @@ TEST(DECIMETER, CONVERSION) {
     EXPECT_EQ(1e2, static_cast<std::int32_t>(Centimeter(unit)));
     EXPECT_EQ(1e3, static_cast<std::int32_t>(Millimeter(unit)));
     EXPECT_EQ(1e6, static_cast<std::int32_t>(Micrometer(unit)));
+}
+
+TEST(DECIMETER, SQRT) {
+    EXPECT_EQ(Decimeter(0), paulista::geometry::dimension::sqrt(Decimeter( 0)));
+    EXPECT_EQ(Decimeter(1), paulista::geometry::dimension::sqrt(Decimeter( 1)));
+    EXPECT_EQ(Decimeter(2), paulista::geometry::dimension::sqrt(Decimeter( 4)));
+    EXPECT_EQ(Decimeter(3), paulista::geometry::dimension::sqrt(Decimeter( 9)));
+    EXPECT_EQ(Decimeter(4), paulista::geometry::dimension::sqrt(Decimeter(16)));
 }
 
 TEST(CENTIMETER, COMPARISON) {
@@ -224,6 +240,14 @@ TEST(CENTIMETER, CONVERSION) {
     EXPECT_EQ(1e6, static_cast<std::int32_t>(Micrometer(unit)));
 }
 
+TEST(CENTIMETER, SQRT) {
+    EXPECT_EQ(Centimeter(0), paulista::geometry::dimension::sqrt(Centimeter( 0)));
+    EXPECT_EQ(Centimeter(1), paulista::geometry::dimension::sqrt(Centimeter( 1)));
+    EXPECT_EQ(Centimeter(2), paulista::geometry::dimension::sqrt(Centimeter( 4)));
+    EXPECT_EQ(Centimeter(3), paulista::geometry::dimension::sqrt(Centimeter( 9)));
+    EXPECT_EQ(Centimeter(4), paulista::geometry::dimension::sqrt(Centimeter(16)));
+}
+
 TEST(MILLIMETER, COMPARISON) {
     Millimeter zero;
     Millimeter one(1);
@@ -282,6 +306,14 @@ TEST(MILLIMETER, CONVERSION) {
     EXPECT_EQ(1e6, static_cast<std::int32_t>(Micrometer(unit)));
 }
 
+TEST(MILLIMETER, SQRT) {
+    EXPECT_EQ(Millimeter(0), paulista::geometry::dimension::sqrt(Millimeter( 0)));
+    EXPECT_EQ(Millimeter(1), paulista::geometry::dimension::sqrt(Millimeter( 1)));
+    EXPECT_EQ(Millimeter(2), paulista::geometry::dimension::sqrt(Millimeter( 4)));
+    EXPECT_EQ(Millimeter(3), paulista::geometry::dimension::sqrt(Millimeter( 9)));
+    EXPECT_EQ(Millimeter(4), paulista::geometry::dimension::sqrt(Millimeter(16)));
+}
+
 TEST(MICROMETER, COMPARISON) {
     Micrometer zero;
     Micrometer one(1);
@@ -338,6 +370,14 @@ TEST(MICROMETER, CONVERSION) {
     EXPECT_EQ(1e2, static_cast<std::int32_t>(Centimeter(unit)));
     EXPECT_EQ(1e3, static_cast<std::int32_t>(Millimeter(unit)));
     EXPECT_EQ(1e6, static_cast<std::int32_t>(            unit));
+}
+
+TEST(MICROMETER, SQRT) {
+    EXPECT_EQ(Micrometer(0), paulista::geometry::dimension::sqrt(Micrometer( 0)));
+    EXPECT_EQ(Micrometer(1), paulista::geometry::dimension::sqrt(Micrometer( 1)));
+    EXPECT_EQ(Micrometer(2), paulista::geometry::dimension::sqrt(Micrometer( 4)));
+    EXPECT_EQ(Micrometer(3), paulista::geometry::dimension::sqrt(Micrometer( 9)));
+    EXPECT_EQ(Micrometer(4), paulista::geometry::dimension::sqrt(Micrometer(16)));
 }
 
 TEST(DIMENSION, TRAIT) {
