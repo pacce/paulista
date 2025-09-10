@@ -1,16 +1,10 @@
 #include <gtest/gtest.h>
 #include <paulista/paulista.hpp>
 
-using paulista::domain::Element;
-using paulista::domain::Elements;
-using paulista::domain::element::Triangle;
 using paulista::domain::element::Tetrahedron;
-using paulista::domain::Centroid;
 using paulista::domain::Node;
 using paulista::domain::Nodes;
-
 using paulista::geometry::dimension::Meter;
-using paulista::geometry::tridimensional::Point;
 
 TEST(TETRAHEDRON, SIMPLE) {
     using Node      = Node<Meter>;
