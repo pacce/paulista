@@ -274,6 +274,13 @@ namespace dimension {
         static_assert(is_dimension<T>::value);
         return T(std::sqrt(static_cast<std::int32_t>(value)));
     }
+
+    template <typename T>
+    T
+    abs(T value) {
+        static_assert(is_dimension<T>::value);
+        return T(std::abs(static_cast<std::int32_t>(value)));
+    }
 } // namespace dimension
 } // namespace geometry
 } // namespace paulista

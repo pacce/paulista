@@ -72,6 +72,27 @@ namespace visitor {
             Nodes<T> ps = {ns[u], ns[v], ns[w], ns[z]};
             return paulista::geometry::tridimensional::point::centroid(ps);
         }
+
+        template <typename T>
+        std::optional<T>
+        volume(const Nodes<T>& ns) const {
+            if (u >= ns.size()) { return std::nullopt; }
+            if (v >= ns.size()) { return std::nullopt; }
+            if (w >= ns.size()) { return std::nullopt; }
+            if (z >= ns.size()) { return std::nullopt; }
+
+            const Node<T>& p0 = ns[u];
+            const Node<T>& p1 = ns[v];
+            const Node<T>& p2 = ns[w];
+            const Node<T>& p3 = ns[z];
+            
+            const Node<T> v1 = p1 - p0;
+            const Node<T> v2 = p2 - p0;
+            const Node<T> v3 = p3 - p0;
+            
+            const T product = v1.dot(v2.cross(v3)) / 6;
+            return paulista::geometry::dimension::abs(product);
+        }
     };
 
     constexpr visitor::is_element<Triangle>     is_triangle;

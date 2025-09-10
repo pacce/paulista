@@ -14,4 +14,5 @@ test(      'dimension', executable(      'dimension',       'dimension.cpp', dep
 test(          'point', executable(          'point',           'point.cpp', dependencies: dependencies))
 test(    'domain-area', executable(    'domain-area',     'domain-area.cpp', dependencies: dependencies))
 test('domain-centroid', executable('domain-centroid', 'domain-centroid.cpp', dependencies: dependencies))
+test('domain-volume', executable('domain-volume', 'domain-volume.cpp', dependencies: dependencies))
 test( 'domain-visitor', executable( 'domain-visitor',  'domain-visitor.cpp', dependencies: dependencies))
