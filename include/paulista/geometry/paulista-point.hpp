@@ -111,6 +111,11 @@ namespace tridimensional {
                     ;
             }
 
+            T
+            norm() const {
+                return paulista::geometry::dimension::sqrt(this->dot(*this));
+            }
+
             Point<T>
             cross(const Point<T>& lhs) const {
                 T x = (y_ * static_cast<std::int32_t>(lhs.z_)) 

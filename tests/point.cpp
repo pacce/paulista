@@ -121,6 +121,51 @@ RC_GTEST_PROP(DOT, SCALAR, (const Point& xs, const Point& ys, std::uint8_t value
     EXPECT_EQ((value * xs).dot(ys),   xs.dot(value * ys));
 }
 
+TEST(NORM, D1) {
+    Point x(1, 0, 0);
+    Point y(0, 1, 0);
+    Point z(0, 0, 1);
+
+    EXPECT_EQ(x.norm(), Millimeter(1));
+    EXPECT_EQ(y.norm(), Millimeter(1));
+    EXPECT_EQ(z.norm(), Millimeter(1));
+}
+
+TEST(NORM, D2) {
+    Point xy(100, 100,   0);
+    Point yz(  0, 100, 100);
+    Point xz(100,   0, 100);
+
+    using paulista::geometry::dimension::sqrt;
+    EXPECT_EQ(xy.norm(), Millimeter(141));
+    EXPECT_EQ(yz.norm(), Millimeter(141));
+    EXPECT_EQ(xz.norm(), Millimeter(141));
+}
+
+TEST(NORM, D3) {
+    Point xyz(100, 100, 100);
+    using paulista::geometry::dimension::sqrt;
+    EXPECT_EQ(xyz.norm(), Millimeter(173));
+}
+
+TEST(NORM, ZERO) {
+    Point zero(0, 0, 0);
+    EXPECT_EQ(zero.norm(), Millimeter(0));
+}
+
+TEST(NORM, SCALING) {
+    Point x(3, 0, 0);
+    Point y(0, 4, 0);
+    Point z(0, 0, 5);
+
+    EXPECT_EQ(x.norm(), Millimeter(3));
+    EXPECT_EQ(y.norm(), Millimeter(4));
+    EXPECT_EQ(z.norm(), Millimeter(5));
+
+    Point pythagorean(3, 4, 0);
+    EXPECT_EQ(pythagorean.norm(), Millimeter(5));
+}
+
 TEST(CROSS, D1) {
     Point x(1, 0, 0);
     Point y(0, 1, 0);
