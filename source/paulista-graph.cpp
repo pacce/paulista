@@ -2,6 +2,7 @@
 #include <set>
 #include <algorithm>
 #include <list>
+#include <unordered_map>
 
 namespace paulista {
 namespace graph {
@@ -110,7 +111,6 @@ namespace graph {
         if (dual.empty()) { return std::nullopt; }
         std::size_t count = dual.size();
 
-        std::vector<Color> colors(count, 0);
 
         struct Entry {
             std::size_t degree;
@@ -144,23 +144,23 @@ namespace graph {
             }
         }
 
-        std::vector<bool> processed(count, false);
-
+        std::vector<Color>                      colors(count, 0);
+        std::unordered_map<std::size_t, Color>  processed;
         for (std::size_t i = count; i > 0; i--) {
             std::size_t vertex = ordering[i - 1];
             std::set<Color> used;
 
             for (node::Index neighbor : dual.adjacencies[vertex]) {
-                if (processed[neighbor]) {
-                    used.insert(colors[neighbor]);
+                if (processed.contains(neighbor)) {
+                    used.insert(processed[neighbor]);
                 }
             }
 
             Color color = 0;
             while (used.contains(color)) { color++; }
 
+            processed[vertex]   = color;
             colors[vertex]      = color;
-            processed[vertex]   = true;
         }
 
         return colors;
