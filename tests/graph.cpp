@@ -258,13 +258,12 @@ TEST(COLOR, EMPTY) {
 }
 
 TEST(COLOR, K4) {
-    Dual dual;
-    dual.adjacencies = {
+    Dual dual = {{
         {1, 2, 3},  // vertex 0 connected to 1, 2, 3
         {0, 2, 3},  // vertex 1 connected to 0, 2, 3
         {0, 1, 3},  // vertex 2 connected to 0, 1, 3
         {0, 1, 2}   // vertex 3 connected to 0, 1, 2
-    };
+    }};
 
     std::optional<std::vector<Color>> result = paulista::graph::color(dual);
     ASSERT_TRUE(result);
@@ -279,6 +278,35 @@ TEST(COLOR, K4) {
     // K4 requires exactly 4 colors (chromatic number = 4)
     std::set<Color> unique(result->begin(), result->end());
     EXPECT_EQ(unique.size(), 4);
+}
+
+TEST(COLOR, Q10) {
+    Dual dual = {{
+        {1, 9},     // vertex 0 connected to 1, 9
+        {0, 2},     // vertex 1 connected to 0, 2
+        {1, 3},     // vertex 2 connected to 1, 3
+        {2, 4},     // vertex 3 connected to 2, 4
+        {3, 5},     // vertex 4 connected to 3, 5
+        {4, 6},     // vertex 5 connected to 4, 6
+        {5, 7},     // vertex 6 connected to 5, 7
+        {6, 8},     // vertex 7 connected to 6, 8
+        {7, 9},     // vertex 8 connected to 7, 9
+        {8, 0}      // vertex 9 connected to 8, 0
+    }};
+
+    std::optional<std::vector<Color>> result = paulista::graph::color(dual);
+    ASSERT_TRUE(result);
+
+    // Verify proper coloring: no two adjacent vertices have same color
+    for (std::size_t vertex = 0; vertex < 10; vertex++) {
+        for (node::Index neighbor : dual.adjacencies[vertex]) {
+            EXPECT_NE(result->at(vertex), result->at(neighbor));
+        }
+    }
+
+    // Q10 (cycle of 10) requires exactly 2 colors (chromatic number = 2)
+    std::set<Color> unique(result->begin(), result->end());
+    EXPECT_EQ(unique.size(), 2);
 }
 
 int
