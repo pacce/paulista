@@ -194,9 +194,6 @@ TEST(DUAL, MIXED) {
         , Triangle{0, 4, 1}         // 5
         , Triangle{1, 4, 5}         // 6
     };
-    // 0 - 1
-    // |   |
-    // 3 - 2
     std::optional<Nodal> nodal = paulista::graph::nodal(8, elements);
     ASSERT_TRUE(nodal);
 
