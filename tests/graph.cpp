@@ -131,6 +131,54 @@ TEST(DUAL, TRIANGLES) {
 
 }
 
+TEST(DUAL, TETRAHEDRON) {
+    struct Experiment {
+        std::vector<node::Indices>  adjacencies;
+        paulista::graph::Common     common;
+    };
+
+    Elements elements = {
+          Tetrahedron{0, 1, 3, 4}
+        , Tetrahedron{1, 2, 3, 6}
+        , Tetrahedron{3, 4, 6, 7}
+        , Tetrahedron{1, 4, 5, 6}
+        , Tetrahedron{1, 3, 4, 6}
+    };
+    std::optional<Nodal> nodal = paulista::graph::nodal(8, elements);
+    ASSERT_TRUE(nodal);
+
+    std::vector<Experiment> experiments = {
+        {
+               {{1, 2, 3, 4}, {0, 2, 3, 4}, {0, 1, 3, 4}, {0, 1, 2, 4}, {0, 1, 2, 3}}
+             , paulista::graph::common::Point{}
+        }
+        , {
+               {{1, 2, 3, 4}, {0, 2, 3, 4}, {0, 1, 3, 4}, {0, 1, 2, 4}, {0, 1, 2, 3}}
+             , paulista::graph::common::Edge{}
+        }
+        , {
+               {{4}, {4}, {4}, {4}, {0, 1, 2, 3}}
+             , paulista::graph::common::Face{}
+        }
+    };
+
+    for (const Experiment& experiment : experiments) {
+        std::optional<Dual> actual = paulista::graph::dual(*nodal, elements, experiment.common);
+
+        ASSERT_TRUE(actual);
+        ASSERT_EQ(actual->adjacencies.size(), experiment.adjacencies.size());
+        for (std::size_t i = 0; i < experiment.adjacencies.size(); i++) {
+            const node::Indices& xs = actual->adjacencies[i];
+            const node::Indices& ys = experiment.adjacencies[i];
+            ASSERT_EQ(xs.size(), ys.size());
+
+            for (std::size_t j = 0; j < ys.size(); j++) {
+                EXPECT_EQ(xs[j], ys[j]);
+            }
+        }
+    }
+}
+
 int
 main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);
