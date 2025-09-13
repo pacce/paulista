@@ -5,6 +5,8 @@ using paulista::domain::element::Triangle;
 using paulista::domain::element::Tetrahedron;
 using paulista::domain::Elements;
 using paulista::graph::Nodal;
+using paulista::graph::Dual;
+using namespace paulista::graph;
 
 TEST(NODAL, EMPTY) {
     Elements elements;
@@ -30,8 +32,8 @@ TEST(NODAL, TRIANGLES) {
     ASSERT_TRUE(actual);
     ASSERT_EQ(actual->indices.size(), expected->indices.size());
     for (std::size_t i = 0; i < expected->indices.size(); i++) {
-        const std::vector<std::size_t>& xs = actual->indices[i];
-        const std::vector<std::size_t>& ys = expected->indices[i];
+        const node::Indices& xs = actual->indices[i];
+        const node::Indices& ys = expected->indices[i];
         ASSERT_EQ(xs.size(), ys.size());
 
         for (std::size_t j = 0; j < ys.size(); j++) {
@@ -63,14 +65,70 @@ TEST(NODAL, TETRAHEDRON) {
     ASSERT_TRUE(actual);
     ASSERT_EQ(actual->indices.size(), expected->indices.size());
     for (std::size_t i = 0; i < expected->indices.size(); i++) {
-        const std::vector<std::size_t>& xs = actual->indices[i];
-        const std::vector<std::size_t>& ys = expected->indices[i];
+        const node::Indices& xs = actual->indices[i];
+        const node::Indices& ys = expected->indices[i];
         ASSERT_EQ(xs.size(), ys.size());
 
         for (std::size_t j = 0; j < ys.size(); j++) {
             EXPECT_EQ(xs[j], ys[j]);
         }
     }
+}
+
+TEST(DUAL, EMPTY) {
+    Elements elements;
+    Nodal nodal{{}};
+    EXPECT_FALSE(paulista::graph::dual(nodal, elements, paulista::graph::common::Point{}));
+    EXPECT_FALSE(paulista::graph::dual(nodal, elements, paulista::graph::common::Edge{}));
+    EXPECT_FALSE(paulista::graph::dual(nodal, elements, paulista::graph::common::Face{}));
+}
+
+TEST(DUAL, TRIANGLES) {
+    struct Experiment {
+        std::vector<node::Indices>  adjacencies;
+        paulista::graph::Common     common;
+    };
+
+    Elements elements = {
+          Triangle{0, 1, 4}
+        , Triangle{1, 2, 4}
+        , Triangle{2, 3, 4}
+        , Triangle{3, 4, 0}
+    };
+    std::optional<Nodal> nodal = paulista::graph::nodal(5, elements);
+    ASSERT_TRUE(nodal);
+
+    std::optional<Dual> actual = paulista::graph::dual(*nodal, elements, paulista::graph::common::Edge{});
+    std::vector<Experiment> experiments = {
+        {
+               {{1, 2, 3}, {0, 2, 3}, {0, 1, 3}, {0, 1, 2}}
+             , paulista::graph::common::Point{}
+        }
+        , {
+               {{1, 3}, {0, 2}, {1, 3}, {0, 2}}
+             , paulista::graph::common::Edge{}
+        }
+        , {
+               {{}, {}, {}, {}}
+             , paulista::graph::common::Face{}
+        }
+    };
+    for (const Experiment& experiment : experiments) {
+        std::optional<Dual> actual = paulista::graph::dual(*nodal, elements, experiment.common);
+
+        ASSERT_TRUE(actual);
+        ASSERT_EQ(actual->adjacencies.size(), experiment.adjacencies.size());
+        for (std::size_t i = 0; i < experiment.adjacencies.size(); i++) {
+            const node::Indices& xs = actual->adjacencies[i];
+            const node::Indices& ys = experiment.adjacencies[i];
+            ASSERT_EQ(xs.size(), ys.size());
+
+            for (std::size_t j = 0; j < ys.size(); j++) {
+                EXPECT_EQ(xs[j], ys[j]);
+            }
+        }
+    }
+
 }
 
 int
