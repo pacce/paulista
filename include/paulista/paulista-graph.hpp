@@ -53,6 +53,9 @@ namespace visitor {
 
     struct Dual {
         std::vector<node::Indices> adjacencies;
+
+        bool empty() const;
+        std::size_t size() const;
     };
 
     std::optional<Nodal>
@@ -60,6 +63,11 @@ namespace visitor {
 
     std::optional<Dual>
     dual(const Nodal& nodal, const domain::Elements& elements, const Common& common);
+
+    using Color = std::size_t;
+
+    std::optional<std::vector<Color>>
+    color(const Dual& dual);
 } // namespace graph
 } // namespace paulista
 

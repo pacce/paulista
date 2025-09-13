@@ -253,6 +253,34 @@ TEST(DUAL, MIXED) {
     }
 }
 
+TEST(COLOR, EMPTY) {
+    ASSERT_FALSE(paulista::graph::color({}));
+}
+
+TEST(COLOR, K4) {
+    Dual dual;
+    dual.adjacencies = {
+        {1, 2, 3},  // vertex 0 connected to 1, 2, 3
+        {0, 2, 3},  // vertex 1 connected to 0, 2, 3
+        {0, 1, 3},  // vertex 2 connected to 0, 1, 3
+        {0, 1, 2}   // vertex 3 connected to 0, 1, 2
+    };
+
+    std::optional<std::vector<Color>> result = paulista::graph::color(dual);
+    ASSERT_TRUE(result);
+
+    // Verify proper coloring: no two adjacent vertices have same color
+    for (std::size_t vertex = 0; vertex < 4; vertex++) {
+        for (node::Index neighbor : dual.adjacencies[vertex]) {
+            EXPECT_NE(result->at(vertex), result->at(neighbor));
+        }
+    }
+
+    // K4 requires exactly 4 colors (chromatic number = 4)
+    std::set<Color> unique(result->begin(), result->end());
+    EXPECT_EQ(unique.size(), 4);
+}
+
 int
 main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);

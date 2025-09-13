@@ -1,6 +1,7 @@
 #include "paulista/paulista-graph.hpp"
 #include <set>
 #include <algorithm>
+#include <list>
 
 namespace paulista {
 namespace graph {
@@ -43,6 +44,16 @@ namespace graph {
             std::sort(index.begin(), index.end());
         }
         return Nodal{indices};
+    }
+
+    bool
+    Dual::empty() const {
+        return adjacencies.empty();
+    }
+
+    std::size_t
+    Dual::size() const {
+        return adjacencies.size();
     }
 
     std::optional<Dual>
@@ -92,6 +103,67 @@ namespace graph {
         }
 
         return Dual{adjacencies};
+    }
+
+    std::optional<std::vector<Color>>
+    color(const Dual& dual) {
+        if (dual.empty()) { return std::nullopt; }
+        std::size_t count = dual.size();
+
+        std::vector<Color> colors(count, 0);
+
+        struct Entry {
+            std::size_t degree;
+            std::size_t vertex;
+
+            bool operator<(const Entry& other) const {
+                return degree < other.degree;
+            }
+        };
+
+        std::list<Entry> entries;
+
+        for (std::size_t i = 0; i < count; i++) {
+            entries.push_back({dual.adjacencies[i].size(), i});
+        }
+
+        std::vector<std::size_t> ordering;
+        ordering.reserve(count);
+
+        while (not entries.empty()) {
+            std::list<Entry>::iterator it = std::min_element(entries.begin(), entries.end());
+
+            std::size_t vertex = it->vertex;
+            ordering.push_back(vertex);
+            entries.erase(it);
+
+            for (Entry& entry : entries) {
+                for (node::Index neighbor : dual.adjacencies[vertex]) {
+                    if (entry.vertex == neighbor) { entry.degree--; break; }
+                }
+            }
+        }
+
+        std::vector<bool> processed(count, false);
+
+        for (std::size_t i = count; i > 0; i--) {
+            std::size_t vertex = ordering[i - 1];
+            std::set<Color> used;
+
+            for (node::Index neighbor : dual.adjacencies[vertex]) {
+                if (processed[neighbor]) {
+                    used.insert(colors[neighbor]);
+                }
+            }
+
+            Color color = 0;
+            while (used.contains(color)) { color++; }
+
+            colors[vertex]      = color;
+            processed[vertex]   = true;
+        }
+
+        return colors;
     }
 } // namespace graph
 } // namespace paulista
