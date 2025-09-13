@@ -3,5 +3,6 @@
 
 #include "paulista-domain.hpp"
 #include "paulista-geometry.hpp"
+#include "paulista-graph.hpp"
 
 #endif // PAULISTA_HPP__

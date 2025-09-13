@@ -1,6 +1,9 @@
 project('paulista', 'cpp', version: '0.1.0', default_options : ['warning_level=3', 'cpp_std=c++23'])
 
-sources       = ['source/paulista-dimension.cpp']
+sources       = [
+    'source/paulista-dimension.cpp'
+  , 'source/paulista-graph.cpp'
+  ]
 headers       = include_directories('include')
 dependencies  = []
 

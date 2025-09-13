@@ -49,7 +49,7 @@ namespace visitor {
             const Node<T>& p0 = ns[u];
             const Node<T>& p1 = ns[v];
             const Node<T>& p2 = ns[w];
-            
+
             const Node<T> normal    = (p1 - p0).cross(p2 - p0);
             return normal.norm() / 2;
         }
@@ -85,11 +85,11 @@ namespace visitor {
             const Node<T>& p1 = ns[v];
             const Node<T>& p2 = ns[w];
             const Node<T>& p3 = ns[z];
-            
+
             const Node<T> v1 = p1 - p0;
             const Node<T> v2 = p2 - p0;
             const Node<T> v3 = p3 - p0;
-            
+
             const T product = v1.dot(v2.cross(v3)) / 6;
             return paulista::geometry::dimension::abs(product);
         }
@@ -104,7 +104,6 @@ namespace visitor {
         element::Tetrahedron
         >;
     using Elements = std::vector<Element>;
-
 } // namespace domain
     template <typename Precision>
     struct Domain {
