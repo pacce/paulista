@@ -1,8 +1,8 @@
 #include "paulista/paulista-graph.hpp"
-#include <set>
+
 #include <algorithm>
-#include <list>
 #include <unordered_map>
+#include <set>
 
 namespace paulista {
 namespace graph {
@@ -106,48 +106,94 @@ namespace graph {
         return Dual{adjacencies};
     }
 
-    std::optional<std::vector<Color>>
-    color(const Dual& dual) {
+    std::strong_ordering
+    Degree::operator<=>(const Degree& other) const {
+        return value <=> other.value;
+    }
+
+    bool
+    Degree::operator<(const Degree& other) const {
+        return (*this <=> other) < 0;
+    }
+
+    bool
+    Degree::operator<=(const Degree& other) const {
+        return (*this <=> other) <= 0;
+    }
+
+    bool
+    Degree::operator>(const Degree& other) const {
+        return (*this <=> other) > 0;
+    }
+
+    bool
+    Degree::operator>=(const Degree& other) const {
+        return (*this <=> other) >= 0;
+    }
+
+    bool
+    Degree::operator==(const Degree& other) const {
+        return (*this <=> other) == 0;
+    }
+
+    bool
+    Degree::operator!=(const Degree& other) const {
+        return (*this <=> other) != 0;
+    }
+
+    std::ostream&
+    operator<<(std::ostream& os, const Degree& degree) {
+        return os << std::format("({}, {})", degree.vertex, degree.value);
+    }
+
+    std::optional<std::list<Degree>>
+    degrees(const Dual& dual) {
         if (dual.empty()) { return std::nullopt; }
         std::size_t count = dual.size();
 
-
-        struct Entry {
-            std::size_t degree;
-            std::size_t vertex;
-
-            bool operator<(const Entry& other) const {
-                return degree < other.degree;
-            }
-        };
-
-        std::list<Entry> entries;
-
+        std::list<Degree> entries;
         for (std::size_t i = 0; i < count; i++) {
-            entries.push_back({dual.adjacencies[i].size(), i});
+            entries.emplace_back(i, dual.adjacencies[i].size());
         }
+        return entries;
+    }
 
-        std::vector<std::size_t> ordering;
+    std::optional<std::vector<Ordering>>
+    ordering(const Dual& dual, std::list<Degree>& degrees) {
+        if (dual.empty()) { return std::nullopt; }
+        std::size_t count = dual.size();
+
+        std::vector<Ordering> ordering;
         ordering.reserve(count);
 
-        while (not entries.empty()) {
-            std::list<Entry>::iterator it = std::min_element(entries.begin(), entries.end());
+        while (not degrees.empty()) {
+            std::list<Degree>::iterator it = std::min_element(degrees.begin(), degrees.end());
 
             std::size_t vertex = it->vertex;
             ordering.push_back(vertex);
-            entries.erase(it);
+            degrees.erase(it);
 
-            for (Entry& entry : entries) {
+            for (Degree& entry : degrees) {
                 for (node::Index neighbor : dual.adjacencies[vertex]) {
-                    if (entry.vertex == neighbor) { entry.degree--; break; }
+                    if (entry.vertex == neighbor) { entry.value--; break; }
                 }
             }
         }
+        return ordering;
+    }
+
+    std::optional<std::vector<Color>>
+    color(const Dual& dual) {
+        if (dual.empty()) { return std::nullopt; }
+        std::size_t count                               = dual.size();
+        std::optional<std::list<Degree>> entries        = paulista::graph::degrees(dual);
+        if (not entries)  { return std::nullopt; }
+        std::optional<std::vector<Ordering>> ordering   = paulista::graph::ordering(dual, *entries);
 
         std::vector<Color>                      colors(count, 0);
         std::unordered_map<std::size_t, Color>  processed;
         for (std::size_t i = count; i > 0; i--) {
-            std::size_t vertex = ordering[i - 1];
+            std::size_t vertex = (*ordering)[i - 1];
             std::set<Color> used;
 
             for (node::Index neighbor : dual.adjacencies[vertex]) {

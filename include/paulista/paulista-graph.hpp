@@ -2,8 +2,10 @@
 #define PAULISTA_GRAPH_HPP__
 
 #include "paulista/paulista-domain.hpp"
+#include <list>
 #include <optional>
 #include <vector>
+#include <compare>
 
 namespace paulista {
 namespace graph {
@@ -63,6 +65,31 @@ namespace visitor {
 
     std::optional<Dual>
     dual(const Nodal& nodal, const domain::Elements& elements, const Common& common);
+
+    
+    struct Degree {
+        std::size_t vertex;
+        std::size_t value;
+
+        bool operator<(const Degree& other) const;
+        bool operator<=(const Degree& other) const;
+        bool operator>(const Degree& other) const;
+        bool operator>=(const Degree& other) const;
+        bool operator==(const Degree& other) const;
+        bool operator!=(const Degree& other) const;
+        std::strong_ordering operator<=>(const Degree& other) const;
+
+        friend std::ostream&
+        operator<<(std::ostream& os, const Degree& degree);
+    };
+
+    std::optional<std::list<Degree>>
+    degrees(const Dual& dual);
+
+    using Ordering = std::size_t;
+
+    std::optional<std::vector<Ordering>>
+    ordering(const Dual& dual, std::list<Degree>& degrees);
 
     using Color = std::size_t;
 

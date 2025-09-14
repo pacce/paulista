@@ -253,6 +253,128 @@ TEST(DUAL, MIXED) {
     }
 }
 
+TEST(DEGREE, COMPARISON) {
+    Degree xs{0, 2};
+    Degree ys{1, 3};
+    Degree zs{2, 2};
+
+    EXPECT_TRUE(xs < ys);
+    EXPECT_FALSE(ys < xs);
+    EXPECT_FALSE(xs < zs);
+
+    EXPECT_TRUE(xs <= ys);
+    EXPECT_TRUE(xs <= zs);
+    EXPECT_FALSE(ys <= xs);
+
+    EXPECT_FALSE(xs > ys);
+    EXPECT_TRUE(ys > xs);
+    EXPECT_FALSE(xs > zs);
+
+    EXPECT_FALSE(xs >= ys);
+    EXPECT_TRUE(xs >= zs);
+    EXPECT_TRUE(ys >= xs);
+
+    EXPECT_FALSE(xs == ys);
+    EXPECT_TRUE(xs == zs);
+
+    EXPECT_TRUE(xs != ys);
+    EXPECT_FALSE(xs != zs);
+}
+
+TEST(DEGREES, K4) {
+    Dual dual = {{
+        {1, 2, 3},  // vertex 0 connected to 1, 2, 3
+        {0, 2, 3},  // vertex 1 connected to 0, 2, 3
+        {0, 1, 3},  // vertex 2 connected to 0, 1, 3
+        {0, 1, 2}   // vertex 3 connected to 0, 1, 2
+    }};
+
+    std::optional<std::list<Degree>> result = paulista::graph::degrees(dual);
+    ASSERT_TRUE(result);
+    ASSERT_EQ(result->size(), 4);
+
+    // All vertices in K4 have degree 3
+    for (const Degree& degree : *result) {
+        EXPECT_EQ(degree.value, 3);
+    }
+}
+
+TEST(DEGREES, Q10) {
+    Dual dual = {{
+        {1, 9},     // vertex 0 connected to 1, 9
+        {0, 2},     // vertex 1 connected to 0, 2
+        {1, 3},     // vertex 2 connected to 1, 3
+        {2, 4},     // vertex 3 connected to 2, 4
+        {3, 5},     // vertex 4 connected to 3, 5
+        {4, 6},     // vertex 5 connected to 4, 6
+        {5, 7},     // vertex 6 connected to 5, 7
+        {6, 8},     // vertex 7 connected to 6, 8
+        {7, 9},     // vertex 8 connected to 7, 9
+        {8, 0}      // vertex 9 connected to 8, 0
+    }};
+
+    std::optional<std::list<Degree>> result = paulista::graph::degrees(dual);
+    ASSERT_TRUE(result);
+    ASSERT_EQ(result->size(), 10);
+
+    // All vertices in Q10 (cycle of 10) have degree 2
+    for (const Degree& degree : *result) {
+        EXPECT_EQ(degree.value, 2);
+    }
+}
+
+TEST(ORDERING, K4) {
+    Dual dual = {{
+        {1, 2, 3},  // vertex 0 connected to 1, 2, 3
+        {0, 2, 3},  // vertex 1 connected to 0, 2, 3
+        {0, 1, 3},  // vertex 2 connected to 0, 1, 3
+        {0, 1, 2}   // vertex 3 connected to 0, 1, 2
+    }};
+
+    std::optional<std::list<Degree>> degrees = paulista::graph::degrees(dual);
+    ASSERT_TRUE(degrees);
+
+    std::optional<std::vector<Ordering>> result = paulista::graph::ordering(dual, *degrees);
+    ASSERT_TRUE(result);
+    ASSERT_EQ(result->size(), 4);
+
+    // For K4, all orderings are valid (all vertices have same degree initially)
+    std::set<std::size_t> vertices(result->begin(), result->end());
+    EXPECT_EQ(vertices.size(), 4);
+    for (std::size_t i = 0; i < 4; i++) {
+        EXPECT_TRUE(vertices.contains(i));
+    }
+}
+
+TEST(ORDERING, Q10) {
+    Dual dual = {{
+        {1, 9},     // vertex 0 connected to 1, 9
+        {0, 2},     // vertex 1 connected to 0, 2
+        {1, 3},     // vertex 2 connected to 1, 3
+        {2, 4},     // vertex 3 connected to 2, 4
+        {3, 5},     // vertex 4 connected to 3, 5
+        {4, 6},     // vertex 5 connected to 4, 6
+        {5, 7},     // vertex 6 connected to 5, 7
+        {6, 8},     // vertex 7 connected to 6, 8
+        {7, 9},     // vertex 8 connected to 7, 9
+        {8, 0}      // vertex 9 connected to 8, 0
+    }};
+
+    std::optional<std::list<Degree>> degrees = paulista::graph::degrees(dual);
+    ASSERT_TRUE(degrees);
+
+    std::optional<std::vector<Ordering>> result = paulista::graph::ordering(dual, *degrees);
+    ASSERT_TRUE(result);
+    ASSERT_EQ(result->size(), 10);
+
+    // For Q10, all vertices should be included in ordering
+    std::set<std::size_t> vertices(result->begin(), result->end());
+    EXPECT_EQ(vertices.size(), 10);
+    for (std::size_t i = 0; i < 10; i++) {
+        EXPECT_TRUE(vertices.contains(i));
+    }
+}
+
 TEST(COLOR, EMPTY) {
     ASSERT_FALSE(paulista::graph::color({}));
 }
