@@ -118,16 +118,20 @@ namespace tridimensional {
 
             Point<T>
             cross(const Point<T>& lhs) const {
-                T x = (y_ * static_cast<std::int32_t>(lhs.z_)) 
+                T x = (y_ * static_cast<std::int32_t>(lhs.z_))
                     - (z_ * static_cast<std::int32_t>(lhs.y_));
 
-                T y = (z_ * static_cast<std::int32_t>(lhs.x_)) 
+                T y = (z_ * static_cast<std::int32_t>(lhs.x_))
                     - (x_ * static_cast<std::int32_t>(lhs.z_));
 
-                T z = (x_ * static_cast<std::int32_t>(lhs.y_)) 
+                T z = (x_ * static_cast<std::int32_t>(lhs.y_))
                     - (y_ * static_cast<std::int32_t>(lhs.x_));
                 return Point<T>(x, y, z);
             }
+
+            T x() const { return x_; }
+            T y() const { return y_; }
+            T z() const { return z_; }
 
             template <typename U>
             explicit operator Point<U>() const { 
