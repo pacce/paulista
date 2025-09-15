@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 #include <paulista/paulista.hpp>
+#include <iostream>
 
 using paulista::element::Triangle;
 using paulista::domain::Node;
