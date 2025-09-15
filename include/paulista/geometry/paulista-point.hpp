@@ -69,44 +69,44 @@ namespace bidimensional {
             }
 
             Point<T>&
-            operator*=(int32_t value) {
+            operator*=(int64_t value) {
                 x_ *= value;
                 y_ *= value;
                 return *this;
             }
 
             friend Point<T>
-            operator*(std::int32_t value, Point<T> p) {
+            operator*(std::int64_t value, Point<T> p) {
                 p *= value; return p;
             }
 
             friend Point<T>
-            operator*(Point<T> p, std::int32_t value) {
+            operator*(Point<T> p, std::int64_t value) {
                 p *= value; return p;
             }
 
             Point<T>&
-            operator/=(int32_t value) {
+            operator/=(int64_t value) {
                 x_ /= value;
                 y_ /= value;
                 return *this;
             }
 
             friend Point<T>
-            operator/(Point<T> p, std::int32_t value) {
+            operator/(Point<T> p, std::int64_t value) {
                 p /= value; return p;
             }
 
             T
             cross(const Point<T>& lhs) const {
-                return  (x_ * static_cast<std::int32_t>(lhs.y_))
-                      - (y_ * static_cast<std::int32_t>(lhs.x_));
+                return  (x_ * static_cast<std::int64_t>(lhs.y_))
+                      - (y_ * static_cast<std::int64_t>(lhs.x_));
             }
 
             T
             dot(const Point<T>& lhs) const {
-                return  (x_ * static_cast<std::int32_t>(lhs.x_))
-                    +   (y_ * static_cast<std::int32_t>(lhs.y_))
+                return  (x_ * static_cast<std::int64_t>(lhs.x_))
+                    +   (y_ * static_cast<std::int64_t>(lhs.y_))
                     ;
             }
 
@@ -142,10 +142,10 @@ namespace point {
         } else if (ps.size() == 1) {
             return ps.front();
         } else {
-            std::int32_t denominator = ps.size();
+            std::int64_t denominator = ps.size();
 
             Point<T> p = ps.front();
-            for (std::int32_t i = 1; i < denominator; i++) { p += ps[i]; }
+            for (std::int64_t i = 1; i < denominator; i++) { p += ps[i]; }
             return (p / denominator);
         }
     };
@@ -214,7 +214,7 @@ namespace tridimensional {
             }
 
             Point<T>&
-            operator*=(int32_t value) {
+            operator*=(int64_t value) {
                 x_ *= value;
                 y_ *= value;
                 z_ *= value;
@@ -222,17 +222,17 @@ namespace tridimensional {
             }
 
             friend Point<T>
-            operator*(std::int32_t value, Point<T> p) {
+            operator*(std::int64_t value, Point<T> p) {
                 p *= value; return p;
             }
 
             friend Point<T>
-            operator*(Point<T> p, std::int32_t value) {
+            operator*(Point<T> p, std::int64_t value) {
                 p *= value; return p;
             }
 
             Point<T>&
-            operator/=(int32_t value) {
+            operator/=(int64_t value) {
                 x_ /= value;
                 y_ /= value;
                 z_ /= value;
@@ -240,15 +240,15 @@ namespace tridimensional {
             }
 
             friend Point<T>
-            operator/(Point<T> p, std::int32_t value) {
+            operator/(Point<T> p, std::int64_t value) {
                 p /= value; return p;
             }
 
             T
             dot(const Point<T>& lhs) const {
-                return  (x_ * static_cast<std::int32_t>(lhs.x_))
-                    +   (y_ * static_cast<std::int32_t>(lhs.y_))
-                    +   (z_ * static_cast<std::int32_t>(lhs.z_))
+                return  (x_ * static_cast<std::int64_t>(lhs.x_))
+                    +   (y_ * static_cast<std::int64_t>(lhs.y_))
+                    +   (z_ * static_cast<std::int64_t>(lhs.z_))
                     ;
             }
 
@@ -259,14 +259,14 @@ namespace tridimensional {
 
             Point<T>
             cross(const Point<T>& lhs) const {
-                T x = (y_ * static_cast<std::int32_t>(lhs.z_))
-                    - (z_ * static_cast<std::int32_t>(lhs.y_));
+                T x = (y_ * static_cast<std::int64_t>(lhs.z_))
+                    - (z_ * static_cast<std::int64_t>(lhs.y_));
 
-                T y = (z_ * static_cast<std::int32_t>(lhs.x_))
-                    - (x_ * static_cast<std::int32_t>(lhs.z_));
+                T y = (z_ * static_cast<std::int64_t>(lhs.x_))
+                    - (x_ * static_cast<std::int64_t>(lhs.z_));
 
-                T z = (x_ * static_cast<std::int32_t>(lhs.y_))
-                    - (y_ * static_cast<std::int32_t>(lhs.x_));
+                T z = (x_ * static_cast<std::int64_t>(lhs.y_))
+                    - (y_ * static_cast<std::int64_t>(lhs.x_));
                 return Point<T>(x, y, z);
             }
 
@@ -300,10 +300,10 @@ namespace point {
         } else if (ps.size() == 1) {
             return ps.front();
         } else {
-            std::int32_t denominator = ps.size();
+            std::int64_t denominator = ps.size();
 
             Point<T> p = ps.front();
-            for (std::int32_t i = 1; i < denominator; i++) { p += ps[i]; }
+            for (std::int64_t i = 1; i < denominator; i++) { p += ps[i]; }
             return (p / denominator);
         }
     };

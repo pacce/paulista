@@ -4,12 +4,12 @@ namespace paulista {
 namespace geometry {
 namespace dimension {
     Meter::Meter() : value_(0) {}
-    Meter::Meter(std::int32_t value) : value_(value) {}
+    Meter::Meter(std::int64_t value) : value_(value) {}
 
-    Meter::Meter(const Decimeter&  value) : value_(static_cast<std::int32_t>(value) / 1e1){}
-    Meter::Meter(const Centimeter& value) : value_(static_cast<std::int32_t>(value) / 1e2){}
-    Meter::Meter(const Millimeter& value) : value_(static_cast<std::int32_t>(value) / 1e3){}
-    Meter::Meter(const Micrometer& value) : value_(static_cast<std::int32_t>(value) / 1e6){}
+    Meter::Meter(const Decimeter&  value) : value_(static_cast<std::int64_t>(value) / 1e1){}
+    Meter::Meter(const Centimeter& value) : value_(static_cast<std::int64_t>(value) / 1e2){}
+    Meter::Meter(const Millimeter& value) : value_(static_cast<std::int64_t>(value) / 1e3){}
+    Meter::Meter(const Micrometer& value) : value_(static_cast<std::int64_t>(value) / 1e6){}
 
     std::strong_ordering
     operator<=>(const Meter& lhs, const Meter& rhs) {
@@ -57,13 +57,13 @@ namespace dimension {
     }
 
     Meter&
-    Meter::operator*=(int32_t value) {
+    Meter::operator*=(int64_t value) {
         value_ *= value;
         return *this;
     }
 
     Meter&
-    Meter::operator/=(int32_t value) {
+    Meter::operator/=(int64_t value) {
         value_ /= value;
         return *this;
     }
@@ -87,32 +87,32 @@ namespace dimension {
     }
 
     Meter
-    operator*(std::int32_t value, Meter p) {
+    operator*(std::int64_t value, Meter p) {
         p *= value; return p;
     }
 
     Meter
-    operator*(Meter p, std::int32_t value) {
+    operator*(Meter p, std::int64_t value) {
         p *= value; return p;
     }
 
     Meter
-    operator/(Meter p, std::int32_t value) {
+    operator/(Meter p, std::int64_t value) {
         p /= value; return p;
     }
 
     std::ostream&
     operator<<(std::ostream& os, const Meter& p) {
-        return os << static_cast<std::int32_t>(p.value_) << "m";
+        return os << static_cast<std::int64_t>(p.value_) << "m";
     }
 
     Decimeter::Decimeter() : value_(0) {}
-    Decimeter::Decimeter(std::int32_t value) : value_(value) {}
+    Decimeter::Decimeter(std::int64_t value) : value_(value) {}
 
-    Decimeter::Decimeter(const Meter&      value) : value_(static_cast<std::int32_t>(value) * 1e1){}
-    Decimeter::Decimeter(const Centimeter& value) : value_(static_cast<std::int32_t>(value) / 1e1){}
-    Decimeter::Decimeter(const Millimeter& value) : value_(static_cast<std::int32_t>(value) / 1e2){}
-    Decimeter::Decimeter(const Micrometer& value) : value_(static_cast<std::int32_t>(value) / 1e5){}
+    Decimeter::Decimeter(const Meter&      value) : value_(static_cast<std::int64_t>(value) * 1e1){}
+    Decimeter::Decimeter(const Centimeter& value) : value_(static_cast<std::int64_t>(value) / 1e1){}
+    Decimeter::Decimeter(const Millimeter& value) : value_(static_cast<std::int64_t>(value) / 1e2){}
+    Decimeter::Decimeter(const Micrometer& value) : value_(static_cast<std::int64_t>(value) / 1e5){}
 
     std::strong_ordering
     operator<=>(const Decimeter& lhs, const Decimeter& rhs) {
@@ -160,13 +160,13 @@ namespace dimension {
     }
 
     Decimeter&
-    Decimeter::operator*=(int32_t value) {
+    Decimeter::operator*=(int64_t value) {
         value_ *= value;
         return *this;
     }
 
     Decimeter&
-    Decimeter::operator/=(int32_t value) {
+    Decimeter::operator/=(int64_t value) {
         value_ /= value;
         return *this;
     }
@@ -190,32 +190,32 @@ namespace dimension {
     }
 
     Decimeter
-    operator*(std::int32_t value, Decimeter p) {
+    operator*(std::int64_t value, Decimeter p) {
         p *= value; return p;
     }
 
     Decimeter
-    operator*(Decimeter p, std::int32_t value) {
+    operator*(Decimeter p, std::int64_t value) {
         p *= value; return p;
     }
 
     Decimeter
-    operator/(Decimeter p, std::int32_t value) {
+    operator/(Decimeter p, std::int64_t value) {
         p /= value; return p;
     }
 
     std::ostream&
     operator<<(std::ostream& os, const Decimeter& p) {
-        return os << static_cast<std::int32_t>(p.value_) << "dm";
+        return os << static_cast<std::int64_t>(p.value_) << "dm";
     }
 
     Centimeter::Centimeter() : value_(0) {}
-    Centimeter::Centimeter(std::int32_t value) : value_(value) {}
+    Centimeter::Centimeter(std::int64_t value) : value_(value) {}
 
-    Centimeter::Centimeter(const Meter&      value) : value_(static_cast<std::int32_t>(value) * 1e2){}
-    Centimeter::Centimeter(const Decimeter&  value) : value_(static_cast<std::int32_t>(value) * 1e1){}
-    Centimeter::Centimeter(const Millimeter& value) : value_(static_cast<std::int32_t>(value) / 1e1){}
-    Centimeter::Centimeter(const Micrometer& value) : value_(static_cast<std::int32_t>(value) / 1e4){}
+    Centimeter::Centimeter(const Meter&      value) : value_(static_cast<std::int64_t>(value) * 1e2){}
+    Centimeter::Centimeter(const Decimeter&  value) : value_(static_cast<std::int64_t>(value) * 1e1){}
+    Centimeter::Centimeter(const Millimeter& value) : value_(static_cast<std::int64_t>(value) / 1e1){}
+    Centimeter::Centimeter(const Micrometer& value) : value_(static_cast<std::int64_t>(value) / 1e4){}
 
     std::strong_ordering
     operator<=>(const Centimeter& lhs, const Centimeter& rhs) {
@@ -263,13 +263,13 @@ namespace dimension {
     }
 
     Centimeter&
-    Centimeter::operator*=(int32_t value) {
+    Centimeter::operator*=(int64_t value) {
         value_ *= value;
         return *this;
     }
 
     Centimeter&
-    Centimeter::operator/=(int32_t value) {
+    Centimeter::operator/=(int64_t value) {
         value_ /= value;
         return *this;
     }
@@ -293,32 +293,32 @@ namespace dimension {
     }
 
     Centimeter
-    operator*(std::int32_t value, Centimeter p) {
+    operator*(std::int64_t value, Centimeter p) {
         p *= value; return p;
     }
 
     Centimeter
-    operator*(Centimeter p, std::int32_t value) {
+    operator*(Centimeter p, std::int64_t value) {
         p *= value; return p;
     }
 
     Centimeter
-    operator/(Centimeter p, std::int32_t value) {
+    operator/(Centimeter p, std::int64_t value) {
         p /= value; return p;
     }
 
     std::ostream&
     operator<<(std::ostream& os, const Centimeter& p) {
-        return os << static_cast<std::int32_t>(p.value_) << "cm";
+        return os << static_cast<std::int64_t>(p.value_) << "cm";
     }
 
     Millimeter::Millimeter() : value_(0) {}
-    Millimeter::Millimeter(std::int32_t value) : value_(value) {}
+    Millimeter::Millimeter(std::int64_t value) : value_(value) {}
 
-    Millimeter::Millimeter(const Meter&      value) : value_(static_cast<std::int32_t>(value) * 1e3){}
-    Millimeter::Millimeter(const Decimeter&  value) : value_(static_cast<std::int32_t>(value) * 1e2){}
-    Millimeter::Millimeter(const Centimeter& value) : value_(static_cast<std::int32_t>(value) * 1e1){}
-    Millimeter::Millimeter(const Micrometer& value) : value_(static_cast<std::int32_t>(value) / 1e3){}
+    Millimeter::Millimeter(const Meter&      value) : value_(static_cast<std::int64_t>(value) * 1e3){}
+    Millimeter::Millimeter(const Decimeter&  value) : value_(static_cast<std::int64_t>(value) * 1e2){}
+    Millimeter::Millimeter(const Centimeter& value) : value_(static_cast<std::int64_t>(value) * 1e1){}
+    Millimeter::Millimeter(const Micrometer& value) : value_(static_cast<std::int64_t>(value) / 1e3){}
 
     std::strong_ordering
     operator<=>(const Millimeter& lhs, const Millimeter& rhs) {
@@ -366,13 +366,13 @@ namespace dimension {
     }
 
     Millimeter&
-    Millimeter::operator*=(int32_t value) {
+    Millimeter::operator*=(int64_t value) {
         value_ *= value;
         return *this;
     }
 
     Millimeter&
-    Millimeter::operator/=(int32_t value) {
+    Millimeter::operator/=(int64_t value) {
         value_ /= value;
         return *this;
     }
@@ -396,32 +396,32 @@ namespace dimension {
     }
 
     Millimeter
-    operator*(std::int32_t value, Millimeter p) {
+    operator*(std::int64_t value, Millimeter p) {
         p *= value; return p;
     }
 
     Millimeter
-    operator*(Millimeter p, std::int32_t value) {
+    operator*(Millimeter p, std::int64_t value) {
         p *= value; return p;
     }
 
     Millimeter
-    operator/(Millimeter p, std::int32_t value) {
+    operator/(Millimeter p, std::int64_t value) {
         p /= value; return p;
     }
 
     std::ostream&
     operator<<(std::ostream& os, const Millimeter& p) {
-        return os << static_cast<std::int32_t>(p.value_) << "mm";
+        return os << static_cast<std::int64_t>(p.value_) << "mm";
     }
 
     Micrometer::Micrometer() : value_(0) {}
-    Micrometer::Micrometer(std::int32_t value) : value_(value) {}
+    Micrometer::Micrometer(std::int64_t value) : value_(value) {}
 
-    Micrometer::Micrometer(const Meter&      value) : value_(static_cast<std::int32_t>(value) * 1e6){}
-    Micrometer::Micrometer(const Decimeter&  value) : value_(static_cast<std::int32_t>(value) * 1e5){}
-    Micrometer::Micrometer(const Centimeter& value) : value_(static_cast<std::int32_t>(value) * 1e4){}
-    Micrometer::Micrometer(const Millimeter& value) : value_(static_cast<std::int32_t>(value) * 1e3){}
+    Micrometer::Micrometer(const Meter&      value) : value_(static_cast<std::int64_t>(value) * 1e6){}
+    Micrometer::Micrometer(const Decimeter&  value) : value_(static_cast<std::int64_t>(value) * 1e5){}
+    Micrometer::Micrometer(const Centimeter& value) : value_(static_cast<std::int64_t>(value) * 1e4){}
+    Micrometer::Micrometer(const Millimeter& value) : value_(static_cast<std::int64_t>(value) * 1e3){}
 
     std::strong_ordering
     operator<=>(const Micrometer& lhs, const Micrometer& rhs) {
@@ -469,13 +469,13 @@ namespace dimension {
     }
 
     Micrometer&
-    Micrometer::operator*=(int32_t value) {
+    Micrometer::operator*=(int64_t value) {
         value_ *= value;
         return *this;
     }
 
     Micrometer&
-    Micrometer::operator/=(int32_t value) {
+    Micrometer::operator/=(int64_t value) {
         value_ /= value;
         return *this;
     }
@@ -499,23 +499,23 @@ namespace dimension {
     }
 
     Micrometer
-    operator*(std::int32_t value, Micrometer p) {
+    operator*(std::int64_t value, Micrometer p) {
         p *= value; return p;
     }
 
     Micrometer
-    operator*(Micrometer p, std::int32_t value) {
+    operator*(Micrometer p, std::int64_t value) {
         p *= value; return p;
     }
 
     Micrometer
-    operator/(Micrometer p, std::int32_t value) {
+    operator/(Micrometer p, std::int64_t value) {
         p /= value; return p;
     }
 
     std::ostream&
     operator<<(std::ostream& os, const Micrometer& p) {
-        return os << static_cast<std::int32_t>(p.value_) << "um";
+        return os << static_cast<std::int64_t>(p.value_) << "um";
     }
 
     Meter::operator Decimeter() const    { return Decimeter(*this); }
