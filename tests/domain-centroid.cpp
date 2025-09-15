@@ -1,10 +1,10 @@
 #include <gtest/gtest.h>
 #include <paulista/paulista.hpp>
 
-using paulista::domain::Element;
-using paulista::domain::Elements;
-using paulista::domain::element::Triangle;
-using paulista::domain::element::Tetrahedron;
+using paulista::Element;
+using paulista::Elements;
+using paulista::element::Triangle;
+using paulista::element::Tetrahedron;
 using paulista::domain::Centroid;
 using paulista::domain::Node;
 using paulista::domain::Nodes;

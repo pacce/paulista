@@ -1,9 +1,9 @@
 #include <gtest/gtest.h>
 #include <paulista/paulista.hpp>
 
-using paulista::domain::element::Triangle;
-using paulista::domain::element::Tetrahedron;
-using paulista::domain::Elements;
+using paulista::element::Triangle;
+using paulista::element::Tetrahedron;
+using paulista::Elements;
 using paulista::graph::Nodal;
 using paulista::graph::Dual;
 using namespace paulista::graph;

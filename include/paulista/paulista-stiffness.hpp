@@ -2,7 +2,6 @@
 #define PAULISTA_STIFFNESS_HPP__
 
 #include "paulista-domain.hpp"
-#include <iostream>
 #include <vector>
 #include <optional>
 
@@ -24,7 +23,7 @@ namespace triangle {
     template<typename Dimension, typename U>
     std::optional<Triplets<U>>
     local(
-              const domain::element::Triangle&  triangle
+              const element::Triangle&          triangle
             , const domain::Nodes<Dimension>&   nodes
             , U                                 conductivity = U()
             ) 

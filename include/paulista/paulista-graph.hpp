@@ -2,6 +2,8 @@
 #define PAULISTA_GRAPH_HPP__
 
 #include "paulista/paulista-domain.hpp"
+#include "paulista/paulista-element.hpp"
+
 #include <list>
 #include <optional>
 #include <vector>
@@ -16,13 +18,15 @@ namespace node {
 
 namespace visitor {
     struct indices {
-        node::Indices operator()(const domain::element::Triangle& e) const {
+        node::Indices
+        operator()(const element::Triangle& e) const {
             node::Indices nodes = {e.u, e.v, e.w};
             std::sort(nodes.begin(), nodes.end());
             return nodes;
         }
 
-        node::Indices operator()(const domain::element::Tetrahedron& e) const {
+        node::Indices
+        operator()(const element::Tetrahedron& e) const {
             node::Indices nodes = {e.u, e.v, e.w, e.z};
             std::sort(nodes.begin(), nodes.end());
             return nodes;
@@ -61,12 +65,11 @@ namespace visitor {
     };
 
     std::optional<Nodal>
-    nodal(std::size_t count, const domain::Elements& elements);
+    nodal(std::size_t count, const Elements& elements);
 
     std::optional<Dual>
-    dual(const Nodal& nodal, const domain::Elements& elements, const Common& common);
+    dual(const Nodal& nodal, const Elements& elements, const Common& common);
 
-    
     struct Degree {
         std::size_t vertex;
         std::size_t value;

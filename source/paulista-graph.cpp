@@ -7,17 +7,17 @@
 namespace paulista {
 namespace graph {
     std::optional<Nodal>
-    nodal(std::size_t count, const domain::Elements& elements) {
+    nodal(std::size_t count, const Elements& elements) {
         if (elements.empty()) { return std::nullopt; }
 
-        using domain::element::Triangle;
-        using domain::element::Tetrahedron;
-        using domain::element::is_triangle;
-        using domain::element::is_tetrahedron;
+        using element::Triangle;
+        using element::Tetrahedron;
+        using element::is_triangle;
+        using element::is_tetrahedron;
 
         std::vector<node::Indices> indices(count);
         for (std::size_t i = 0; i < elements.size(); i++) {
-            const domain::Element& element = elements[i];
+            const Element& element = elements[i];
             if (std::visit(is_triangle, element)) {
                 Triangle e = std::get<Triangle>(element);
                 if (e.u > indices.size()) { return std::nullopt; }
@@ -58,18 +58,18 @@ namespace graph {
     }
 
     std::optional<Dual>
-    dual(const Nodal& nodal, const domain::Elements& elements, const Common& common) {
+    dual(const Nodal& nodal, const Elements& elements, const Common& common) {
         if (elements.empty()) { return std::nullopt; }
 
-        using domain::element::Triangle;
-        using domain::element::Tetrahedron;
-        using domain::element::is_triangle;
-        using domain::element::is_tetrahedron;
+        using element::Triangle;
+        using element::Tetrahedron;
+        using element::is_triangle;
+        using element::is_tetrahedron;
 
         std::vector<node::Indices> adjacencies(elements.size());
 
         for (node::Index index = 0; index < elements.size(); index++) {
-            const domain::Element& element = elements[index];
+            const Element& element = elements[index];
             std::set<node::Index> neighbors;
 
             node::Indices nodes = std::visit(visitor::nodes, element);

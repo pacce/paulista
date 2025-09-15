@@ -4,6 +4,8 @@
 #include <cmath>
 #include <variant>
 #include <type_traits>
+
+#include "paulista-element.hpp"
 #include "paulista-geometry.hpp"
 
 namespace paulista {
@@ -13,145 +15,18 @@ namespace domain {
 
     template <typename Precision> using Centroid    = paulista::geometry::tridimensional::Point<Precision>;
     template <typename Precision> using Centroids   = std::vector<Node<Precision>>;
-namespace element {
-namespace visitor {
-    template <typename T>
-    struct is_element {
-        template <typename U>
-        bool operator()(const U&) const {
-            return std::is_same_v<T, U>;
-        }
-    };
-} // namespace visitor
-    struct Triangle {
-        std::size_t u;
-        std::size_t v;
-        std::size_t w;
-
-        template <typename T>
-        std::optional<Centroid<T>>
-        centroid(const Nodes<T>& ns) const {
-            if (u >= ns.size()) { return std::nullopt; }
-            if (v >= ns.size()) { return std::nullopt; }
-            if (w >= ns.size()) { return std::nullopt; }
-
-            Nodes<T> ps = {ns[u], ns[v], ns[w]};
-            return paulista::geometry::tridimensional::point::centroid(ps);
-        }
-
-        template <typename T>
-        std::optional<T>
-        area(const Nodes<T>& ns) const {
-            if (u >= ns.size()) { return std::nullopt; }
-            if (v >= ns.size()) { return std::nullopt; }
-            if (w >= ns.size()) { return std::nullopt; }
-
-            const Node<T>& p0 = ns[u];
-            const Node<T>& p1 = ns[v];
-            const Node<T>& p2 = ns[w];
-
-            const Node<T> normal    = (p1 - p0).cross(p2 - p0);
-            return normal.norm() / 2;
-        }
-
-        template <typename T>
-        std::optional<std::vector<geometry::tridimensional::Point<T>>>
-        edges(const Nodes<T>& ns) const {
-            using P3 = geometry::tridimensional::Point<T>;
-
-            if (u >= ns.size()) { return std::nullopt; }
-            if (v >= ns.size()) { return std::nullopt; }
-            if (w >= ns.size()) { return std::nullopt; }
-
-            return std::vector<P3>{
-                  ns[v] - ns[u]
-                , ns[w] - ns[u]
-                , ns[w] - ns[v]
-            };
-        }
-
-        template <typename T>
-        std::optional<std::vector<geometry::bidimensional::Point<T>>>
-        gradients(const Nodes<T>& ns) const {
-            using P2 = geometry::bidimensional::Point<T>;
-            using P3 = geometry::tridimensional::Point<T>;
-
-            if (u >= ns.size()) { return std::nullopt; }
-            if (v >= ns.size()) { return std::nullopt; }
-            if (w >= ns.size()) { return std::nullopt; }
-
-            std::optional<std::vector<P3>> ii   = this->edges(ns);
-            if (not ii) { return std::nullopt; }
-            std::vector<P2> result = {};
-            for (typename std::vector<P3>::const_reverse_iterator it = ii->rbegin(); it != ii->rend(); it++) {
-                result.emplace_back(it->y(), it->x());
-            }
-            return result;
-        }
-    };
-
-    struct Tetrahedron {
-        std::size_t u;
-        std::size_t v;
-        std::size_t w;
-        std::size_t z;
-
-        template <typename T>
-        std::optional<Centroid<T>>
-        centroid(const Nodes<T>& ns) const {
-            if (u >= ns.size()) { return std::nullopt; }
-            if (v >= ns.size()) { return std::nullopt; }
-            if (w >= ns.size()) { return std::nullopt; }
-            if (z >= ns.size()) { return std::nullopt; }
-
-            Nodes<T> ps = {ns[u], ns[v], ns[w], ns[z]};
-            return paulista::geometry::tridimensional::point::centroid(ps);
-        }
-
-        template <typename T>
-        std::optional<T>
-        volume(const Nodes<T>& ns) const {
-            if (u >= ns.size()) { return std::nullopt; }
-            if (v >= ns.size()) { return std::nullopt; }
-            if (w >= ns.size()) { return std::nullopt; }
-            if (z >= ns.size()) { return std::nullopt; }
-
-            const Node<T>& p0 = ns[u];
-            const Node<T>& p1 = ns[v];
-            const Node<T>& p2 = ns[w];
-            const Node<T>& p3 = ns[z];
-
-            const Node<T> v1 = p1 - p0;
-            const Node<T> v2 = p2 - p0;
-            const Node<T> v3 = p3 - p0;
-
-            const T product = v1.dot(v2.cross(v3)) / 6;
-            return paulista::geometry::dimension::abs(product);
-        }
-    };
-
-    constexpr visitor::is_element<Triangle>     is_triangle;
-    constexpr visitor::is_element<Tetrahedron>  is_tetrahedron;
-} // namespace element
-
-    using Element = std::variant<
-        element::Triangle,
-        element::Tetrahedron
-        >;
-    using Elements = std::vector<Element>;
 } // namespace domain
     template <typename Precision>
     struct Domain {
         domain::Nodes<Precision>    nodes;
-        domain::Elements            elements;
+        Elements                    elements;
 
         std::vector<std::optional<domain::Centroid<Precision>>>
         centroids() const {
-            using domain::Element;
-            using domain::element::Triangle;
-            using domain::element::Tetrahedron;
-            using domain::element::is_triangle;
-            using domain::element::is_tetrahedron;
+            using element::Triangle;
+            using element::Tetrahedron;
+            using element::is_triangle;
+            using element::is_tetrahedron;
 
             using Centroid  = domain::Centroid<Precision>;
 

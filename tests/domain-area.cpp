@@ -1,8 +1,7 @@
 #include <gtest/gtest.h>
 #include <paulista/paulista.hpp>
-#include <iostream>
 
-using paulista::domain::element::Triangle;
+using paulista::element::Triangle;
 using paulista::domain::Node;
 using paulista::domain::Nodes;
 using paulista::geometry::dimension::Meter;

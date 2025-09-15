@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include <paulista/paulista.hpp>
 
-using paulista::domain::element::Tetrahedron;
+using paulista::element::Tetrahedron;
 using paulista::domain::Node;
 using paulista::domain::Nodes;
 using paulista::geometry::dimension::Meter;

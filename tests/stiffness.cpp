@@ -4,7 +4,7 @@
 
 using paulista::geometry::dimension::Meter;
 using paulista::geometry::dimension::Millimeter;
-using paulista::domain::element::Triangle;
+using paulista::element::Triangle;
 using paulista::domain::Node;
 using paulista::domain::Nodes;
 using paulista::stiffness::Triplets;

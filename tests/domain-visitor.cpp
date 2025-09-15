@@ -1,12 +1,12 @@
 #include <gtest/gtest.h>
 #include <paulista/paulista.hpp>
 
-using paulista::domain::Element;
-using paulista::domain::Elements;
-using paulista::domain::element::Triangle;
-using paulista::domain::element::Tetrahedron;
-using paulista::domain::element::is_triangle;
-using paulista::domain::element::is_tetrahedron;
+using paulista::Element;
+using paulista::Elements;
+using paulista::element::Triangle;
+using paulista::element::Tetrahedron;
+using paulista::element::is_triangle;
+using paulista::element::is_tetrahedron;
 
 TEST(VISITOR, TRIANGLE) {
     Element triangle    = Triangle{0, 1, 2};
