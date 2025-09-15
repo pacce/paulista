@@ -101,11 +101,11 @@ RC_GTEST_PROP(METER, DIVISION, (const Meter& x)) {
 TEST(METER, CONVERSION) {
     Meter unit(1e0);
 
-    EXPECT_EQ(1e0, static_cast<std::int32_t>(           unit ));
-    EXPECT_EQ(1e1, static_cast<std::int32_t>( Decimeter(unit)));
-    EXPECT_EQ(1e2, static_cast<std::int32_t>(Centimeter(unit)));
-    EXPECT_EQ(1e3, static_cast<std::int32_t>(Millimeter(unit)));
-    EXPECT_EQ(1e6, static_cast<std::int32_t>(Micrometer(unit)));
+    EXPECT_EQ(1e0, static_cast<std::int64_t>(           unit ));
+    EXPECT_EQ(1e1, static_cast<std::int64_t>( Decimeter(unit)));
+    EXPECT_EQ(1e2, static_cast<std::int64_t>(Centimeter(unit)));
+    EXPECT_EQ(1e3, static_cast<std::int64_t>(Millimeter(unit)));
+    EXPECT_EQ(1e6, static_cast<std::int64_t>(Micrometer(unit)));
 }
 
 TEST(METER, SQRT) {
@@ -167,11 +167,11 @@ RC_GTEST_PROP(DECIMETER, DIVISION, (const Decimeter& x)) {
 TEST(DECIMETER, CONVERSION) {
     Decimeter unit(1e1);
 
-    EXPECT_EQ(1e0, static_cast<std::int32_t>(     Meter(unit)));
-    EXPECT_EQ(1e1, static_cast<std::int32_t>(           unit));
-    EXPECT_EQ(1e2, static_cast<std::int32_t>(Centimeter(unit)));
-    EXPECT_EQ(1e3, static_cast<std::int32_t>(Millimeter(unit)));
-    EXPECT_EQ(1e6, static_cast<std::int32_t>(Micrometer(unit)));
+    EXPECT_EQ(1e0, static_cast<std::int64_t>(     Meter(unit)));
+    EXPECT_EQ(1e1, static_cast<std::int64_t>(           unit));
+    EXPECT_EQ(1e2, static_cast<std::int64_t>(Centimeter(unit)));
+    EXPECT_EQ(1e3, static_cast<std::int64_t>(Millimeter(unit)));
+    EXPECT_EQ(1e6, static_cast<std::int64_t>(Micrometer(unit)));
 }
 
 TEST(DECIMETER, SQRT) {
@@ -233,11 +233,11 @@ RC_GTEST_PROP(CENTIMETER, DIVISION, (const Centimeter& x)) {
 TEST(CENTIMETER, CONVERSION) {
     Centimeter unit(1e2);
 
-    EXPECT_EQ(1e0, static_cast<std::int32_t>(     Meter(unit)));
-    EXPECT_EQ(1e1, static_cast<std::int32_t>( Decimeter(unit)));
-    EXPECT_EQ(1e2, static_cast<std::int32_t>(            unit));
-    EXPECT_EQ(1e3, static_cast<std::int32_t>(Millimeter(unit)));
-    EXPECT_EQ(1e6, static_cast<std::int32_t>(Micrometer(unit)));
+    EXPECT_EQ(1e0, static_cast<std::int64_t>(     Meter(unit)));
+    EXPECT_EQ(1e1, static_cast<std::int64_t>( Decimeter(unit)));
+    EXPECT_EQ(1e2, static_cast<std::int64_t>(            unit));
+    EXPECT_EQ(1e3, static_cast<std::int64_t>(Millimeter(unit)));
+    EXPECT_EQ(1e6, static_cast<std::int64_t>(Micrometer(unit)));
 }
 
 TEST(CENTIMETER, SQRT) {
@@ -299,11 +299,11 @@ RC_GTEST_PROP(MILLIMETER, DIVISION, (const Millimeter& x)) {
 TEST(MILLIMETER, CONVERSION) {
     Millimeter unit(1e3);
 
-    EXPECT_EQ(1e0, static_cast<std::int32_t>(     Meter(unit)));
-    EXPECT_EQ(1e1, static_cast<std::int32_t>( Decimeter(unit)));
-    EXPECT_EQ(1e2, static_cast<std::int32_t>(Centimeter(unit)));
-    EXPECT_EQ(1e3, static_cast<std::int32_t>(            unit));
-    EXPECT_EQ(1e6, static_cast<std::int32_t>(Micrometer(unit)));
+    EXPECT_EQ(1e0, static_cast<std::int64_t>(     Meter(unit)));
+    EXPECT_EQ(1e1, static_cast<std::int64_t>( Decimeter(unit)));
+    EXPECT_EQ(1e2, static_cast<std::int64_t>(Centimeter(unit)));
+    EXPECT_EQ(1e3, static_cast<std::int64_t>(            unit));
+    EXPECT_EQ(1e6, static_cast<std::int64_t>(Micrometer(unit)));
 }
 
 TEST(MILLIMETER, SQRT) {
@@ -365,11 +365,11 @@ RC_GTEST_PROP(MICROMETER, DIVISION, (const Micrometer& x)) {
 TEST(MICROMETER, CONVERSION) {
     Micrometer unit(1e6);
 
-    EXPECT_EQ(1e0, static_cast<std::int32_t>(     Meter(unit)));
-    EXPECT_EQ(1e1, static_cast<std::int32_t>( Decimeter(unit)));
-    EXPECT_EQ(1e2, static_cast<std::int32_t>(Centimeter(unit)));
-    EXPECT_EQ(1e3, static_cast<std::int32_t>(Millimeter(unit)));
-    EXPECT_EQ(1e6, static_cast<std::int32_t>(            unit));
+    EXPECT_EQ(1e0, static_cast<std::int64_t>(     Meter(unit)));
+    EXPECT_EQ(1e1, static_cast<std::int64_t>( Decimeter(unit)));
+    EXPECT_EQ(1e2, static_cast<std::int64_t>(Centimeter(unit)));
+    EXPECT_EQ(1e3, static_cast<std::int64_t>(Millimeter(unit)));
+    EXPECT_EQ(1e6, static_cast<std::int64_t>(            unit));
 }
 
 TEST(MICROMETER, SQRT) {

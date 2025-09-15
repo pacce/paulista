@@ -17,3 +17,4 @@ test(           'graph', executable(           'graph',            'graph.cpp', 
 test( 'domain-centroid', executable( 'domain-centroid',  'domain-centroid.cpp', dependencies: dependencies))
 test(  'domain-visitor', executable(  'domain-visitor',   'domain-visitor.cpp', dependencies: dependencies))
 test(   'domain-volume', executable(   'domain-volume',    'domain-volume.cpp', dependencies: dependencies))
+test(       'stiffness', executable(       'stiffness',        'stiffness.cpp', dependencies: dependencies))

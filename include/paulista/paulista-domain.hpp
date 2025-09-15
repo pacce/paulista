@@ -53,6 +53,41 @@ namespace visitor {
             const Node<T> normal    = (p1 - p0).cross(p2 - p0);
             return normal.norm() / 2;
         }
+
+        template <typename T>
+        std::optional<std::vector<geometry::tridimensional::Point<T>>>
+        edges(const Nodes<T>& ns) const {
+            using P3 = geometry::tridimensional::Point<T>;
+
+            if (u >= ns.size()) { return std::nullopt; }
+            if (v >= ns.size()) { return std::nullopt; }
+            if (w >= ns.size()) { return std::nullopt; }
+
+            return std::vector<P3>{
+                  ns[v] - ns[u]
+                , ns[w] - ns[u]
+                , ns[w] - ns[v]
+            };
+        }
+
+        template <typename T>
+        std::optional<std::vector<geometry::bidimensional::Point<T>>>
+        gradients(const Nodes<T>& ns) const {
+            using P2 = geometry::bidimensional::Point<T>;
+            using P3 = geometry::tridimensional::Point<T>;
+
+            if (u >= ns.size()) { return std::nullopt; }
+            if (v >= ns.size()) { return std::nullopt; }
+            if (w >= ns.size()) { return std::nullopt; }
+
+            std::optional<std::vector<P3>> ii   = this->edges(ns);
+            if (not ii) { return std::nullopt; }
+            std::vector<P2> result = {};
+            for (typename std::vector<P3>::const_reverse_iterator it = ii->rbegin(); it != ii->rend(); it++) {
+                result.emplace_back(it->y(), it->x());
+            }
+            return result;
+        }
     };
 
     struct Tetrahedron {
