@@ -68,6 +68,58 @@ namespace triangle {
         return triplets;
     }
 } // namespace triangle
+
+namespace tetrahedron {
+    template<typename Dimension, typename U>
+    std::optional<Triplets<U>>
+    local(
+              const element::Tetrahedron&       tetrahedron
+            , const domain::Nodes<Dimension>&  nodes
+            , U                                conductivity = U()
+            )
+    {
+        static_assert(std::is_floating_point_v<U>, "U must be a floating point type");
+        U correction = geometry::dimension::conversion::inverse<Dimension>::value;
+
+        using P3 = geometry::tridimensional::Point<Dimension>;
+
+        if (tetrahedron.u >= nodes.size()) { return std::nullopt; }
+        if (tetrahedron.v >= nodes.size()) { return std::nullopt; }
+        if (tetrahedron.w >= nodes.size()) { return std::nullopt; }
+        if (tetrahedron.z >= nodes.size()) { return std::nullopt; }
+
+        std::vector<std::size_t> indices = {
+              tetrahedron.u
+            , tetrahedron.v
+            , tetrahedron.w
+            , tetrahedron.z
+        };
+
+        std::optional<Dimension> volume = tetrahedron.volume(nodes);
+        if (not volume)               { return std::nullopt; }
+        if (*volume == Dimension(0))  { return std::nullopt; }
+
+        std::optional<std::vector<P3>> gradients = tetrahedron.gradients(nodes);
+        if (not gradients) { return std::nullopt; }
+
+        U denominator = 6 * static_cast<std::int64_t>(*volume) * correction * correction * correction;
+
+        Triplets<U> triplets;
+        triplets.reserve(16);
+        for (std::size_t i = 0; i < 4; i++) {
+        for (std::size_t j = 0; j < 4; j++) {
+            U numerator = static_cast<U>(gradients->at(i).dot(gradients->at(j))) * correction * correction;
+            triplets.emplace_back(
+                      indices[i]
+                    , indices[j]
+                    , (conductivity * numerator) / (denominator * denominator)
+            );
+        }
+        }
+
+        return triplets;
+    }
+} // namespace tetrahedron
 } // namespace stiffness
 } // namespace paulista
 

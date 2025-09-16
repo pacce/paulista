@@ -120,6 +120,36 @@ namespace visitor {
             const T product = v1.dot(v2.cross(v3)) / 6;
             return paulista::geometry::dimension::abs(product);
         }
+
+        template <typename T>
+        std::optional<std::vector<geometry::tridimensional::Point<T>>>
+        gradients(const std::vector<paulista::geometry::tridimensional::Point<T>>& ns) const {
+            using P3 = geometry::tridimensional::Point<T>;
+
+            if (u >= ns.size()) { return std::nullopt; }
+            if (v >= ns.size()) { return std::nullopt; }
+            if (w >= ns.size()) { return std::nullopt; }
+            if (z >= ns.size()) { return std::nullopt; }
+
+            const P3& p0 = ns[u];
+            const P3& p1 = ns[v];
+            const P3& p2 = ns[w];
+            const P3& p3 = ns[z];
+
+            const P3 v1 = p1 - p0;
+            const P3 v2 = p2 - p0;
+            const P3 v3 = p3 - p0;
+
+            const T det = v1.dot(v2.cross(v3));
+            if (det == T(0)) { return std::nullopt; }
+
+            const P3 n1 = v2.cross(v3) / static_cast<std::int64_t>(det);
+            const P3 n2 = v3.cross(v1) / static_cast<std::int64_t>(det);
+            const P3 n3 = v1.cross(v2) / static_cast<std::int64_t>(det);
+            const P3 n0 = -(n1 + n2 + n3);
+
+            return std::vector<P3>{n0, n1, n2, n3};
+        }
     };
 
     constexpr visitor::is_element<Triangle>     is_triangle;

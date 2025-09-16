@@ -5,6 +5,7 @@
 using paulista::geometry::dimension::Meter;
 using paulista::geometry::dimension::Millimeter;
 using paulista::element::Triangle;
+using paulista::element::Tetrahedron;
 using paulista::domain::Node;
 using paulista::domain::Nodes;
 using paulista::stiffness::Triplets;
@@ -88,6 +89,83 @@ TEST(TRIANGLE, CONDUCTIVITY) {
         for (std::size_t j = 0; j < 9; j++) {
             EXPECT_EQ(current[j].row, reference[j].row);
             EXPECT_EQ(current[j].row, reference[j].row);
+            EXPECT_FLOAT_EQ(current[j].value, static_cast<float>(i + 1) * reference[j].value);
+        }
+    }
+}
+
+TEST(TETRAHEDRON, EMPTY) {
+    Tetrahedron tetrahedron{0, 1, 2, 3};
+    Nodes<Meter> nodes;
+
+    EXPECT_FALSE(paulista::stiffness::tetrahedron::local(tetrahedron, nodes, 1.0f));
+}
+
+TEST(TETRAHEDRON, INDICES) {
+    using Node  = Node<Meter>;
+    using Nodes = Nodes<Meter>;
+
+    Tetrahedron tetrahedron{0, 1, 2, 5};
+    Nodes nodes = {
+        Node{0, 0, 0},
+        Node{1, 0, 0},
+        Node{0, 1, 0},
+        Node{0, 0, 1}
+    };
+
+    EXPECT_FALSE(paulista::stiffness::tetrahedron::local(tetrahedron, nodes, 1.0f));
+}
+
+TEST(TETRAHEDRON, UNIT) {
+    using Node  = Node<Millimeter>;
+    using Nodes = Nodes<Millimeter>;
+
+    Tetrahedron tetrahedron{0, 1, 2, 3};
+    Nodes nodes = {
+        Node{   0,    0,    0},
+        Node{1000,    0,    0},
+        Node{   0, 1000,    0},
+        Node{   0,    0, 1000}
+    };
+
+    std::optional<Triplets<float>> result = paulista::stiffness::tetrahedron::local(tetrahedron, nodes, 1.0f);
+    ASSERT_TRUE(result);
+    EXPECT_EQ(result->size(), 16);
+
+    for (std::size_t i = 0; i < 16; i++) {
+        EXPECT_GE((*result)[i].row, 0);
+        EXPECT_LE((*result)[i].row, 3);
+        EXPECT_GE((*result)[i].col, 0);
+        EXPECT_LE((*result)[i].col, 3);
+    }
+}
+
+TEST(TETRAHEDRON, CONDUCTIVITY) {
+    using Node  = Node<Millimeter>;
+    using Nodes = Nodes<Millimeter>;
+
+    Tetrahedron tetrahedron{0, 1, 2, 3};
+    Nodes nodes = {
+        Node{   0,    0,    0},
+        Node{1000,    0,    0},
+        Node{   0, 1000,    0},
+        Node{   0,    0, 1000}
+    };
+
+    std::vector<Triplets<float>> experiments;
+    for (float i = 1.0f; i <= 3.0f; i++) {
+        std::optional<Triplets<float>> experiment = paulista::stiffness::tetrahedron::local(tetrahedron, nodes, i);
+        ASSERT_TRUE(experiment);
+
+        experiments.push_back(*experiment);
+    }
+
+    Triplets<float> reference = experiments.front();
+    for (std::size_t i = 0; i < 3; i++) {
+        const Triplets<float>& current = experiments[i];
+        for (std::size_t j = 0; j < 16; j++) {
+            EXPECT_EQ(current[j].row, reference[j].row);
+            EXPECT_EQ(current[j].col, reference[j].col);
             EXPECT_FLOAT_EQ(current[j].value, static_cast<float>(i + 1) * reference[j].value);
         }
     }
