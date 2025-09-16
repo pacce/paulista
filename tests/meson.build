@@ -16,3 +16,4 @@ test(     ' point', executable(      'point',       'point.cpp', dependencies: d
 test(      'graph', executable(      'graph',       'graph.cpp', dependencies: dependencies))
 test(   'triangle', executable(   'triangle',    'triangle.cpp', dependencies: dependencies))
 test('tetrahedron', executable('tetrahedron', 'tetrahedron.cpp', dependencies: dependencies))
+test(     'sparse', executable(     'sparse',      'sparse.cpp', dependencies: dependencies))
