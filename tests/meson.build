@@ -10,11 +10,9 @@ gtest               = dependency('gtest')
 
 dependencies  = [gtest, rapidcheck, rapidcheck_gtest, paulista_dep]
 
-test(       'dimension', executable(       'dimension',        'dimension.cpp', dependencies: dependencies))
-test(           'point', executable(           'point',            'point.cpp', dependencies: dependencies))
-test(     'domain-area', executable(     'domain-area',      'domain-area.cpp', dependencies: dependencies))
-test(           'graph', executable(           'graph',            'graph.cpp', dependencies: dependencies))
-test( 'domain-centroid', executable( 'domain-centroid',  'domain-centroid.cpp', dependencies: dependencies))
-test(  'domain-visitor', executable(  'domain-visitor',   'domain-visitor.cpp', dependencies: dependencies))
-test(   'domain-volume', executable(   'domain-volume',    'domain-volume.cpp', dependencies: dependencies))
-test(       'stiffness', executable(       'stiffness',        'stiffness.cpp', dependencies: dependencies))
+test(  'dimension', executable(  'dimension',   'dimension.cpp', dependencies: dependencies))
+test(     'domain', executable(     'domain',      'domain.cpp', dependencies: dependencies))
+test(     ' point', executable(      'point',       'point.cpp', dependencies: dependencies))
+test(      'graph', executable(      'graph',       'graph.cpp', dependencies: dependencies))
+test(   'triangle', executable(   'triangle',    'triangle.cpp', dependencies: dependencies))
+test('tetrahedron', executable('tetrahedron', 'tetrahedron.cpp', dependencies: dependencies))

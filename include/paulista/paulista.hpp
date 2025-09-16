@@ -5,5 +5,6 @@
 #include "paulista-element.hpp"
 #include "paulista-geometry.hpp"
 #include "paulista-graph.hpp"
+#include "paulista-stiffness.hpp"
 
 #endif // PAULISTA_HPP__
