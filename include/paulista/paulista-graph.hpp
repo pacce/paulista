@@ -15,7 +15,10 @@ namespace node {
     using Index     = std::size_t;
     using Indices   = std::vector<Index>;
 } // namespace node
-
+namespace vertex {
+    using Index     = std::size_t;
+    using Indices   = std::vector<std::size_t>;
+} // namespace vertex
 namespace visitor {
     struct indices {
         node::Indices
@@ -57,19 +60,27 @@ namespace visitor {
         std::vector<node::Indices> indices;
     };
 
-    struct Dual {
-        std::vector<node::Indices> adjacencies;
+    std::optional<Nodal>
+    nodal(std::size_t count, const Elements& elements);
+
+    // std::optional<Dual>
+    // dual(const Nodal& nodal, const Elements& elements, const Common& common);
+} // namespace graph
+    struct Graph {
+        std::vector<graph::vertex::Indices> adjacencies;
 
         bool empty() const;
         std::size_t size() const;
     };
-
-    std::optional<Nodal>
-    nodal(std::size_t count, const Elements& elements);
-
-    std::optional<Dual>
-    dual(const Nodal& nodal, const Elements& elements, const Common& common);
-
+namespace graph {
+namespace node {
+    std::optional<Graph>
+    dual(const Elements& elements);
+} // namespace node
+namespace element {
+    std::optional<Graph>
+    dual(const Elements& elements, const Common& common);
+} // namespace element
     struct Degree {
         std::size_t vertex;
         std::size_t value;
@@ -87,17 +98,20 @@ namespace visitor {
     };
 
     std::optional<std::list<Degree>>
-    degrees(const Dual& dual);
+    degrees(const Graph& graph);
 
     using Ordering = std::size_t;
 
     std::optional<std::vector<Ordering>>
-    ordering(const Dual& dual, std::list<Degree>& degrees);
+    ordering(const Graph& graph, std::list<Degree>& degrees);
 
     using Color = std::size_t;
-
+namespace coloring {
+namespace smallest {
     std::optional<std::vector<Color>>
-    color(const Dual& dual);
+    last(const Graph& graph);
+} // namespace smallest 
+} // namespace coloring
 } // namespace graph
 } // namespace paulista
 

@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <unordered_map>
 #include <set>
+#include <iostream>
 
 namespace paulista {
 namespace graph {
@@ -10,10 +11,10 @@ namespace graph {
     nodal(std::size_t count, const Elements& elements) {
         if (elements.empty()) { return std::nullopt; }
 
-        using element::Triangle;
-        using element::Tetrahedron;
-        using element::is_triangle;
-        using element::is_tetrahedron;
+        using paulista::element::Triangle;
+        using paulista::element::Tetrahedron;
+        using paulista::element::is_triangle;
+        using paulista::element::is_tetrahedron;
 
         std::vector<node::Indices> indices(count);
         for (std::size_t i = 0; i < elements.size(); i++) {
@@ -45,65 +46,6 @@ namespace graph {
             std::sort(index.begin(), index.end());
         }
         return Nodal{indices};
-    }
-
-    bool
-    Dual::empty() const {
-        return adjacencies.empty();
-    }
-
-    std::size_t
-    Dual::size() const {
-        return adjacencies.size();
-    }
-
-    std::optional<Dual>
-    dual(const Nodal& nodal, const Elements& elements, const Common& common) {
-        if (elements.empty()) { return std::nullopt; }
-
-        using element::Triangle;
-        using element::Tetrahedron;
-        using element::is_triangle;
-        using element::is_tetrahedron;
-
-        std::vector<node::Indices> adjacencies(elements.size());
-
-        for (node::Index index = 0; index < elements.size(); index++) {
-            const Element& element = elements[index];
-            std::set<node::Index> neighbors;
-
-            node::Indices nodes = std::visit(visitor::nodes, element);
-
-            for (node::Index node : nodes) {
-                if (node >= nodal.indices.size()) { return std::nullopt; }
-                for (node::Index neighbor : nodal.indices[node]) {
-                    if (neighbor != index) { neighbors.insert(neighbor); }
-                }
-            }
-
-            for (node::Index neighbor : neighbors) {
-                if (neighbor < elements.size()) {
-                    node::Indices other = std::visit(visitor::nodes, elements[neighbor]);
-
-                    std::set<node::Index> intersection;
-                    std::set_intersection(
-                          nodes.begin()
-                        , nodes.end()
-                        , other.begin()
-                        , other.end()
-                        , std::inserter(intersection, intersection.begin())
-                    );
-
-                    if (intersection.size() >= std::visit(visitor::shared, common)) {
-                        adjacencies[index].push_back(neighbor);
-                    }
-                }
-            }
-
-            std::sort(adjacencies[index].begin(), adjacencies[index].end());
-        }
-
-        return Dual{adjacencies};
     }
 
     std::strong_ordering
@@ -145,23 +87,126 @@ namespace graph {
     operator<<(std::ostream& os, const Degree& degree) {
         return os << std::format("({}, {})", degree.vertex, degree.value);
     }
+} // namespace graph
+    bool
+    Graph::empty() const {
+        return adjacencies.empty();
+    }
 
+    std::size_t
+    Graph::size() const {
+        return adjacencies.size();
+    }
+namespace graph {
+namespace node {
+    std::optional<Graph>
+    dual(const Elements& elements) {
+        if (elements.empty()) { return std::nullopt; }
+
+        std::size_t count = 0;
+        for (const Element& element : elements) {
+            vertex::Indices vertices = std::visit(visitor::nodes, element);
+            for (const vertex::Index& vertex : vertices) {
+                count = std::max(vertex, count);
+            }
+        }
+
+        std::vector<std::set<std::size_t>> adjacencies(count + 1);
+        for (const Element& element : elements) {
+            vertex::Indices vertices = std::visit(visitor::nodes, element);
+            for (std::size_t i = 0    ; i < vertices.size(); i++) {
+            for (std::size_t j = i + 1; j < vertices.size(); j++) {
+                adjacencies[vertices[i]].insert(vertices[j]);
+                adjacencies[vertices[j]].insert(vertices[i]);
+            }
+            }
+        }
+
+        Graph graph;
+        graph.adjacencies.resize(count + 1);
+        for (std::size_t i = 0; i <= count; i++) {
+            graph.adjacencies[i].assign(adjacencies[i].begin(), adjacencies[i].end());
+        }
+
+        return graph;
+    }
+} // namespace node
+namespace element {
+    std::optional<Graph>
+    dual(const Elements& elements, const Common& common) {
+        if (elements.empty()) { return std::nullopt; }
+
+        std::size_t count = 0;
+        for (const Element& element : elements) {
+            vertex::Indices vertices = std::visit(visitor::nodes, element);
+            for (const vertex::Index& vertex : vertices) {
+                count = std::max(vertex, count);
+            }
+        }
+        std::optional<Nodal> nodal = graph::nodal(count + 1, elements);
+        if (not nodal) { return std::nullopt; }
+
+        using paulista::element::Triangle;
+        using paulista::element::Tetrahedron;
+        using paulista::element::is_triangle;
+        using paulista::element::is_tetrahedron;
+
+        std::vector<node::Indices> adjacencies(elements.size());
+
+        for (node::Index index = 0; index < elements.size(); index++) {
+            const Element& element = elements[index];
+            std::set<node::Index> neighbors;
+
+            node::Indices nodes = std::visit(visitor::nodes, element);
+
+            for (node::Index node : nodes) {
+                if (node >= nodal->indices.size()) { return std::nullopt; }
+                for (node::Index neighbor : nodal->indices[node]) {
+                    if (neighbor != index) { neighbors.insert(neighbor); }
+                }
+            }
+
+            for (node::Index neighbor : neighbors) {
+                if (neighbor < elements.size()) {
+                    node::Indices other = std::visit(visitor::nodes, elements[neighbor]);
+
+                    std::set<node::Index> intersection;
+                    std::set_intersection(
+                          nodes.begin()
+                        , nodes.end()
+                        , other.begin()
+                        , other.end()
+                        , std::inserter(intersection, intersection.begin())
+                    );
+
+                    if (intersection.size() >= std::visit(visitor::shared, common)) {
+                        adjacencies[index].push_back(neighbor);
+                    }
+                }
+            }
+
+            std::sort(adjacencies[index].begin(), adjacencies[index].end());
+        }
+
+        return Graph{adjacencies};
+    }
+} // namespace element
     std::optional<std::list<Degree>>
-    degrees(const Dual& dual) {
-        if (dual.empty()) { return std::nullopt; }
-        std::size_t count = dual.size();
+    degrees(const Graph& graph) {
+        if (graph.empty()) { return std::nullopt; }
+        std::size_t count = graph.size();
 
         std::list<Degree> entries;
         for (std::size_t i = 0; i < count; i++) {
-            entries.emplace_back(i, dual.adjacencies[i].size());
+            entries.emplace_back(i, graph.adjacencies[i].size());
         }
         return entries;
     }
 
     std::optional<std::vector<Ordering>>
-    ordering(const Dual& dual, std::list<Degree>& degrees) {
-        if (dual.empty()) { return std::nullopt; }
-        std::size_t count = dual.size();
+    ordering(const Graph& graph, std::list<Degree>& degrees) {
+        if (graph.empty()) { return std::nullopt; }
+        std::size_t count = graph.size();
 
         std::vector<Ordering> ordering;
         ordering.reserve(count);
@@ -174,21 +219,22 @@ namespace graph {
             degrees.erase(it);
 
             for (Degree& entry : degrees) {
-                for (node::Index neighbor : dual.adjacencies[vertex]) {
+                for (node::Index neighbor : graph.adjacencies[vertex]) {
                     if (entry.vertex == neighbor) { entry.value--; break; }
                 }
             }
         }
         return ordering;
     }
-
+namespace coloring {
+namespace smallest {
     std::optional<std::vector<Color>>
-    color(const Dual& dual) {
-        if (dual.empty()) { return std::nullopt; }
-        std::size_t count                               = dual.size();
-        std::optional<std::list<Degree>> entries        = paulista::graph::degrees(dual);
+    last(const Graph& graph) {
+        if (graph.empty()) { return std::nullopt; }
+        std::size_t count                               = graph.size();
+        std::optional<std::list<Degree>> entries        = paulista::graph::degrees(graph);
         if (not entries)  { return std::nullopt; }
-        std::optional<std::vector<Ordering>> ordering   = paulista::graph::ordering(dual, *entries);
+        std::optional<std::vector<Ordering>> ordering   = paulista::graph::ordering(graph, *entries);
 
         std::vector<Color>                      colors(count, 0);
         std::unordered_map<std::size_t, Color>  processed;
@@ -196,7 +242,7 @@ namespace graph {
             std::size_t vertex = (*ordering)[i - 1];
             std::set<Color> used;
 
-            for (node::Index neighbor : dual.adjacencies[vertex]) {
+            for (node::Index neighbor : graph.adjacencies[vertex]) {
                 if (processed.contains(neighbor)) {
                     used.insert(processed[neighbor]);
                 }
@@ -211,5 +257,7 @@ namespace graph {
 
         return colors;
     }
+} // namespace smallest 
+} // namespace coloring
 } // namespace graph
 } // namespace paulista

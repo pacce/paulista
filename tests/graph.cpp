@@ -4,8 +4,10 @@
 using paulista::element::Triangle;
 using paulista::element::Tetrahedron;
 using paulista::Elements;
+
+using paulista::Graph;
 using paulista::graph::Nodal;
-using paulista::graph::Dual;
+
 using namespace paulista::graph;
 
 TEST(NODAL, EMPTY) {
@@ -75,12 +77,41 @@ TEST(NODAL, TETRAHEDRON) {
     }
 }
 
+TEST(DUAL, NODE) {
+    Elements elements = {
+          Triangle{0, 1, 4}
+        , Triangle{1, 2, 4}
+        , Triangle{2, 3, 4}
+        , Triangle{3, 4, 0}
+    };
+
+    std::optional<Graph> actual     = paulista::graph::node::dual(elements);
+    std::optional<Graph> expected   = Graph{{
+          {1, 3, 4}
+        , {0, 2, 4}
+        , {1, 3, 4}
+        , {0, 2, 4}
+        , {0, 1, 2, 3}
+    }};
+
+    ASSERT_TRUE(actual);
+    ASSERT_EQ(actual->size(), expected->size());
+    for (std::size_t i = 0; i < expected->size(); i++) {
+        const paulista::graph::vertex::Indices& xs = actual->adjacencies[i];
+        const paulista::graph::vertex::Indices& ys = actual->adjacencies[i];
+
+        ASSERT_EQ(xs.size(), ys.size());
+        for (std::size_t j = 0; j < xs.size(); j++) {
+            EXPECT_EQ(xs[j], ys[j]);
+        }
+    }
+}
+
 TEST(DUAL, EMPTY) {
-    Elements elements;
-    Nodal nodal{{}};
-    EXPECT_FALSE(paulista::graph::dual(nodal, elements, paulista::graph::common::Point{}));
-    EXPECT_FALSE(paulista::graph::dual(nodal, elements, paulista::graph::common::Edge{}));
-    EXPECT_FALSE(paulista::graph::dual(nodal, elements, paulista::graph::common::Face{}));
+    EXPECT_FALSE(paulista::graph::node::dual({}));
+    EXPECT_FALSE(paulista::graph::element::dual({}, paulista::graph::common::Point{}));
+    EXPECT_FALSE(paulista::graph::element::dual({}, paulista::graph::common::Edge{}));
+    EXPECT_FALSE(paulista::graph::element::dual({}, paulista::graph::common::Face{}));
 }
 
 TEST(DUAL, TRIANGLES) {
@@ -95,10 +126,7 @@ TEST(DUAL, TRIANGLES) {
         , Triangle{2, 3, 4}
         , Triangle{3, 4, 0}
     };
-    std::optional<Nodal> nodal = paulista::graph::nodal(5, elements);
-    ASSERT_TRUE(nodal);
 
-    std::optional<Dual> actual = paulista::graph::dual(*nodal, elements, paulista::graph::common::Edge{});
     std::vector<Experiment> experiments = {
         {
                {{1, 2, 3}, {0, 2, 3}, {0, 1, 3}, {0, 1, 2}}
@@ -114,7 +142,7 @@ TEST(DUAL, TRIANGLES) {
         }
     };
     for (const Experiment& experiment : experiments) {
-        std::optional<Dual> actual = paulista::graph::dual(*nodal, elements, experiment.common);
+        std::optional<Graph> actual = paulista::graph::element::dual(elements, experiment.common);
 
         ASSERT_TRUE(actual);
         ASSERT_EQ(actual->adjacencies.size(), experiment.adjacencies.size());
@@ -128,7 +156,6 @@ TEST(DUAL, TRIANGLES) {
             }
         }
     }
-
 }
 
 TEST(DUAL, TETRAHEDRON) {
@@ -163,7 +190,7 @@ TEST(DUAL, TETRAHEDRON) {
     };
 
     for (const Experiment& experiment : experiments) {
-        std::optional<Dual> actual = paulista::graph::dual(*nodal, elements, experiment.common);
+        std::optional<Graph> actual = paulista::graph::element::dual(elements, experiment.common);
 
         ASSERT_TRUE(actual);
         ASSERT_EQ(actual->adjacencies.size(), experiment.adjacencies.size());
@@ -237,7 +264,7 @@ TEST(DUAL, MIXED) {
     };
 
     for (const Experiment& experiment : experiments) {
-        std::optional<Dual> actual = paulista::graph::dual(*nodal, elements, experiment.common);
+        std::optional<Graph> actual = paulista::graph::element::dual(elements, experiment.common);
 
         ASSERT_TRUE(actual);
         ASSERT_EQ(actual->adjacencies.size(), experiment.adjacencies.size());
@@ -282,14 +309,14 @@ TEST(DEGREE, COMPARISON) {
 }
 
 TEST(DEGREES, K4) {
-    Dual dual = {{
+    Graph graph = {{
         {1, 2, 3},  // vertex 0 connected to 1, 2, 3
         {0, 2, 3},  // vertex 1 connected to 0, 2, 3
         {0, 1, 3},  // vertex 2 connected to 0, 1, 3
         {0, 1, 2}   // vertex 3 connected to 0, 1, 2
     }};
 
-    std::optional<std::list<Degree>> result = paulista::graph::degrees(dual);
+    std::optional<std::list<Degree>> result = paulista::graph::degrees(graph);
     ASSERT_TRUE(result);
     ASSERT_EQ(result->size(), 4);
 
@@ -300,7 +327,7 @@ TEST(DEGREES, K4) {
 }
 
 TEST(DEGREES, Q10) {
-    Dual dual = {{
+    Graph graph = {{
         {1, 9},     // vertex 0 connected to 1, 9
         {0, 2},     // vertex 1 connected to 0, 2
         {1, 3},     // vertex 2 connected to 1, 3
@@ -313,7 +340,7 @@ TEST(DEGREES, Q10) {
         {8, 0}      // vertex 9 connected to 8, 0
     }};
 
-    std::optional<std::list<Degree>> result = paulista::graph::degrees(dual);
+    std::optional<std::list<Degree>> result = paulista::graph::degrees(graph);
     ASSERT_TRUE(result);
     ASSERT_EQ(result->size(), 10);
 
@@ -324,17 +351,17 @@ TEST(DEGREES, Q10) {
 }
 
 TEST(ORDERING, K4) {
-    Dual dual = {{
+    Graph graph = {{
         {1, 2, 3},  // vertex 0 connected to 1, 2, 3
         {0, 2, 3},  // vertex 1 connected to 0, 2, 3
         {0, 1, 3},  // vertex 2 connected to 0, 1, 3
         {0, 1, 2}   // vertex 3 connected to 0, 1, 2
     }};
 
-    std::optional<std::list<Degree>> degrees = paulista::graph::degrees(dual);
+    std::optional<std::list<Degree>> degrees = paulista::graph::degrees(graph);
     ASSERT_TRUE(degrees);
 
-    std::optional<std::vector<Ordering>> result = paulista::graph::ordering(dual, *degrees);
+    std::optional<std::vector<Ordering>> result = paulista::graph::ordering(graph, *degrees);
     ASSERT_TRUE(result);
     ASSERT_EQ(result->size(), 4);
 
@@ -347,7 +374,7 @@ TEST(ORDERING, K4) {
 }
 
 TEST(ORDERING, Q10) {
-    Dual dual = {{
+    Graph graph = {{
         {1, 9},     // vertex 0 connected to 1, 9
         {0, 2},     // vertex 1 connected to 0, 2
         {1, 3},     // vertex 2 connected to 1, 3
@@ -360,10 +387,10 @@ TEST(ORDERING, Q10) {
         {8, 0}      // vertex 9 connected to 8, 0
     }};
 
-    std::optional<std::list<Degree>> degrees = paulista::graph::degrees(dual);
+    std::optional<std::list<Degree>> degrees = paulista::graph::degrees(graph);
     ASSERT_TRUE(degrees);
 
-    std::optional<std::vector<Ordering>> result = paulista::graph::ordering(dual, *degrees);
+    std::optional<std::vector<Ordering>> result = paulista::graph::ordering(graph, *degrees);
     ASSERT_TRUE(result);
     ASSERT_EQ(result->size(), 10);
 
@@ -376,23 +403,23 @@ TEST(ORDERING, Q10) {
 }
 
 TEST(COLOR, EMPTY) {
-    ASSERT_FALSE(paulista::graph::color({}));
+    ASSERT_FALSE(paulista::graph::coloring::smallest::last({}));
 }
 
 TEST(COLOR, K4) {
-    Dual dual = {{
+    Graph graph = {{
         {1, 2, 3},  // vertex 0 connected to 1, 2, 3
         {0, 2, 3},  // vertex 1 connected to 0, 2, 3
         {0, 1, 3},  // vertex 2 connected to 0, 1, 3
         {0, 1, 2}   // vertex 3 connected to 0, 1, 2
     }};
 
-    std::optional<std::vector<Color>> result = paulista::graph::color(dual);
+    std::optional<std::vector<Color>> result = paulista::graph::coloring::smallest::last(graph);
     ASSERT_TRUE(result);
 
     // Verify proper coloring: no two adjacent vertices have same color
     for (std::size_t vertex = 0; vertex < 4; vertex++) {
-        for (node::Index neighbor : dual.adjacencies[vertex]) {
+        for (node::Index neighbor : graph.adjacencies[vertex]) {
             EXPECT_NE(result->at(vertex), result->at(neighbor));
         }
     }
@@ -403,7 +430,7 @@ TEST(COLOR, K4) {
 }
 
 TEST(COLOR, Q10) {
-    Dual dual = {{
+    Graph graph = {{
         {1, 9},     // vertex 0 connected to 1, 9
         {0, 2},     // vertex 1 connected to 0, 2
         {1, 3},     // vertex 2 connected to 1, 3
@@ -416,12 +443,12 @@ TEST(COLOR, Q10) {
         {8, 0}      // vertex 9 connected to 8, 0
     }};
 
-    std::optional<std::vector<Color>> result = paulista::graph::color(dual);
+    std::optional<std::vector<Color>> result = paulista::graph::coloring::smallest::last(graph);
     ASSERT_TRUE(result);
 
     // Verify proper coloring: no two adjacent vertices have same color
     for (std::size_t vertex = 0; vertex < 10; vertex++) {
-        for (node::Index neighbor : dual.adjacencies[vertex]) {
+        for (node::Index neighbor : graph.adjacencies[vertex]) {
             EXPECT_NE(result->at(vertex), result->at(neighbor));
         }
     }
