@@ -3,6 +3,7 @@ project('paulista', 'cpp', version: '0.1.0', default_options : ['warning_level=3
 sources       = [
     'source/paulista-dimension.cpp'
   , 'source/paulista-graph.cpp'
+  , 'source/paulista-sparse.cpp'
   ]
 headers       = include_directories('include')
 dependencies  = []

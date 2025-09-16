@@ -1,13 +1,17 @@
 #ifndef PAULISTA_SPARSE_HPP__
 #define PAULISTA_SPARSE_HPP__
 
+#include "paulista-graph.hpp"
 #include "paulista-stiffness.hpp"
-#include <vector>
-#include <algorithm>
+
 #include <map>
+#include <vector>
 
 namespace paulista {
 namespace sparse {
+    std::optional<std::size_t>
+    nonzero(const Graph& graph);
+
     using Column = std::vector<std::size_t>;
     using Row = std::vector<std::size_t>;
 
