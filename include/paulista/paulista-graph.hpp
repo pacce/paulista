@@ -71,6 +71,12 @@ namespace visitor {
 
         bool empty() const;
         std::size_t size() const;
+
+        graph::vertex::Indices& operator[](std::size_t index);
+        const graph::vertex::Indices& operator[](std::size_t index) const;
+
+        graph::vertex::Indices& at(std::size_t index);
+        const graph::vertex::Indices& at(std::size_t index) const;
     };
 namespace graph {
 namespace node {
@@ -110,7 +116,7 @@ namespace coloring {
 namespace smallest {
     std::optional<std::vector<Color>>
     last(const Graph& graph);
-} // namespace smallest 
+} // namespace smallest
 } // namespace coloring
 } // namespace graph
 } // namespace paulista

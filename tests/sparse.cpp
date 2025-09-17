@@ -64,26 +64,26 @@ TEST(NONZERO, K4) {
 
     std::optional<std::size_t> result = paulista::sparse::nonzero(graph);
     ASSERT_TRUE(result);
-    EXPECT_EQ(*result, 12); // 4 vertices * 3 connections each = 12 non-zeros
+    EXPECT_EQ(*result, 16); // 4 vertices * 3 connections each + 4 self connection = 16 non-zeros
 }
 
 TEST(NONZERO, Q10) {
     paulista::Graph graph{{
-        {1, 9},     // vertex 0 connected to 1, 9
-        {0, 2},     // vertex 1 connected to 0, 2
-        {1, 3},     // vertex 2 connected to 1, 3
-        {2, 4},     // vertex 3 connected to 2, 4
-        {3, 5},     // vertex 4 connected to 3, 5
-        {4, 6},     // vertex 5 connected to 4, 6
-        {5, 7},     // vertex 6 connected to 5, 7
-        {6, 8},     // vertex 7 connected to 6, 8
-        {7, 9},     // vertex 8 connected to 7, 9
-        {8, 0}      // vertex 9 connected to 8, 0
+          {1, 9}
+        , {2, 0}
+        , {3, 1}
+        , {4, 2}
+        , {5, 3}
+        , {6, 4}
+        , {7, 5}
+        , {8, 6}
+        , {9, 7}
+        , {8, 0}
     }};
 
     std::optional<std::size_t> result = paulista::sparse::nonzero(graph);
     ASSERT_TRUE(result);
-    EXPECT_EQ(*result, 20); // 10 vertices * 2 connections each = 20 non-zeros
+    EXPECT_EQ(*result, 30); // 10 vertices * 2 connections each + 10 self connections = 30 non-zeros
 }
 
 TEST(NONZERO, TRIANGLES) {
@@ -103,10 +103,81 @@ TEST(NONZERO, TRIANGLES) {
     std::optional<std::size_t> result = paulista::sparse::nonzero(*graph);
     ASSERT_TRUE(result);
     // Expected adjacencies: {1,3,4}, {0,2,4}, {1,3,4}, {0,2,4}, {0,1,2,3}
-    EXPECT_EQ(*result, 16); // 3+3+3+3+4 = 16 non-zeros
+    EXPECT_EQ(*result, 21); // 3+3+3+3+4+5= 20 non-zeros
 }
 
-int 
+TEST(MAPPING, K2) {
+    // Simple 2x2 fully connected graph
+    paulista::Graph graph{{
+        {1},    // node 0 connected to node 1
+        {0}     // node 1 connected to node 0
+    }};
+
+    paulista::sparse::coordinate::Map mapping = paulista::sparse::coordinate::mapping(graph);
+
+    ASSERT_TRUE(mapping.contains({0, 0}));
+    ASSERT_TRUE(mapping.contains({0, 1}));
+    ASSERT_TRUE(mapping.contains({1, 0}));
+    ASSERT_TRUE(mapping.contains({1, 1}));
+}
+
+TEST(MAPPING, K3) {
+    paulista::Graph graph{{
+        {1, 2},     // node 0 connected to 1, 2
+        {0, 2},     // node 1 connected to 0, 2
+        {0, 1}      // node 2 connected to 0, 1
+    }};
+
+    paulista::sparse::coordinate::Map mapping = paulista::sparse::coordinate::mapping(graph);
+
+    ASSERT_TRUE(mapping.contains({0, 0}));
+    ASSERT_TRUE(mapping.contains({0, 1}));
+    ASSERT_TRUE(mapping.contains({0, 2}));
+
+    ASSERT_TRUE(mapping.contains({1, 0}));
+    ASSERT_TRUE(mapping.contains({1, 1}));
+    ASSERT_TRUE(mapping.contains({1, 2}));
+
+    ASSERT_TRUE(mapping.contains({2, 0}));
+    ASSERT_TRUE(mapping.contains({2, 1}));
+    ASSERT_TRUE(mapping.contains({2, 2}));
+}
+
+TEST(MAPPING, Q10) {
+    paulista::Graph graph{{
+          {1, 9}
+        , {2, 0}
+        , {3, 1}
+        , {4, 2}
+        , {5, 3}
+        , {6, 4}
+        , {7, 5}
+        , {8, 6}
+        , {9, 7}
+        , {8, 0}
+    }};
+
+    paulista::sparse::coordinate::Map mapping = paulista::sparse::coordinate::mapping(graph);
+
+    std::size_t nonzero = 0;
+    for (std::size_t i = 0; i < 10; i++) {
+        std::size_t j = (i + 1) % 10;
+        std::size_t k = (i + 9) % 10;
+
+        std::vector<std::size_t> vs{i, j, k};
+        std::sort(vs.begin(), vs.end());
+
+        ASSERT_TRUE(mapping.contains({i, vs[0]}));
+        ASSERT_TRUE(mapping.contains({i, vs[1]}));
+        ASSERT_TRUE(mapping.contains({i, vs[2]}));
+
+        EXPECT_EQ(mapping.at({vs[0], i}), nonzero++);
+        EXPECT_EQ(mapping.at({vs[1], i}), nonzero++);
+        EXPECT_EQ(mapping.at({vs[2], i}), nonzero++);
+    }
+}
+
+int
 main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();

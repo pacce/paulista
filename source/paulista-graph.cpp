@@ -97,6 +97,26 @@ namespace graph {
     Graph::size() const {
         return adjacencies.size();
     }
+
+    graph::vertex::Indices&
+    Graph::operator[](std::size_t index) {
+        return adjacencies[index];
+    }
+
+    const graph::vertex::Indices&
+    Graph::operator[](std::size_t index) const {
+        return adjacencies[index];
+    }
+
+    graph::vertex::Indices&
+    Graph::at(std::size_t index) {
+        return adjacencies.at(index);
+    }
+
+    const graph::vertex::Indices&
+    Graph::at(std::size_t index) const {
+        return adjacencies.at(index);
+    }
 namespace graph {
 namespace node {
     std::optional<Graph>
@@ -257,7 +277,7 @@ namespace smallest {
 
         return colors;
     }
-} // namespace smallest 
+} // namespace smallest
 } // namespace coloring
 } // namespace graph
 } // namespace paulista

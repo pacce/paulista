@@ -11,6 +11,13 @@ namespace paulista {
 namespace sparse {
     std::optional<std::size_t>
     nonzero(const Graph& graph);
+    using Coordinate = std::pair<std::size_t, std::size_t>;
+namespace coordinate {
+    using Map = std::map<Coordinate, std::size_t>;
+
+    coordinate::Map
+    mapping(const Graph& graph);
+} // namespace coordinate
 
     using Column = std::vector<std::size_t>;
     using Row = std::vector<std::size_t>;
